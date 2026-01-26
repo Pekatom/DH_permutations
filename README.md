@@ -8,7 +8,8 @@ L is the DH permutation corresponding to the pair (b_j, c_j) in the SageMath for
 WARNING: please apply this command only to very small primes 
 
 Here is the link to a helfpul video: 
-LINK
+
+https://temple.zoom.us/rec/share/2vyg0LJHebZtPVF2jhX9wZcSS7YQ0c3ZABUoj04FxYbYEJxz7JEo7J2eYE5LKHhX.RBOWO0PhYDRYQdyR?startTime=1769454210000
 
 Jan 22, 2026, VD: I uploaded my current version of "DH_Perm.sage"; it does not make sense to looks below line 276; some functions above this line correctly but some do not; 
 for example the function vul_exp( , ) does not work correctly...
