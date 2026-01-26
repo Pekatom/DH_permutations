@@ -12,10 +12,15 @@ import time
 import random
 #for a list L, the command random.choice(L) returns a random element of the list L
 
-from itertools import product
+from itertools import product as prod
 '''
-product( ) realizes the cartesian product; for instance 
-product((0,1), repeat = 3) is a generator of all tuples of 0's and 1's of length 3
+prod( ) is a generator that realizes the cartesian product; for instance 
+prod((0,1), repeat = 3) is a generator of all tuples of 0's and 1's of length 3
+Note that, prod( ) can be applied to generators; for instance, we can use 
+prod(prim_roots(p), range(p-1)) for a prime p. 
+
+SageMath has a useful function 'product' and it does a different thing; for 
+instance, for permutations a, b, c, product([a, b, c]) returns the product a*b*c
 '''
 
 from itertools import combinations as comb
@@ -49,6 +54,14 @@ def load_now(FILE):
     FO = open(FILE,'rb')
     return load(FO)
 
+
+'''
+for a list L and a tuple t = (n_0, n_1, ..., n_q) of non-negative integers < len(L), the 
+command my_slice(L,t) returns the list [L[n_0], L[n_1], ... , L[n_q]]
+'''
+def my_slice(L,t):
+    return [L[a] for a in t] 
+
 '''
 From SageMath documentation: for an integer N > 1 and integers b, x the command
 power_mod(b, x, N) returns the remainder of division of b^x by N; note that
@@ -59,6 +72,11 @@ for a positive integer n, the command nth_prime(n) returns the n-the prime, e.g.
 the command [nth_prime(n) for n in range(1,11)] returns the list 
 [2, 3, 5, 7, 11, 13, 17, 19, 23, 29]
 '''
+
+#SG(n) returns the symmetric group of {1,2, ... , n} as the instance of the appropriate SageMath class
+def SG(n):
+    return SymmetricGroup(n)
+
 
 '''
 for an integer n, the built-in  SageMath command next_prime(n) returns the smallest prime p such that p > n
@@ -200,7 +218,7 @@ all DH permutations
 #
 def lengths(p):
     PR = list(prim_roots(p)); Shifts = list(range(p-1))
-    return [len(DH_cycle_type(p, b, c)) for (b, c) in product(PR, Shifts)]
+    return [len(DH_cycle_type(p, b, c)) for (b, c) in prod(PR, Shifts)]
 
 '''
 let p be prime, b be a primitive root mod p and c be an integer;
@@ -214,13 +232,33 @@ def fixed_points(p, b, c):
 '''
 for a prime p, the pairs (b,c), where b is a primitive root and 0 \leq c \leq p-2 is an integer, 
 are organized in some order; the command list_num_fp(p) returns the list L;  the j-th entry of 
-L is the number of fixed points for the DH permutation corresponding to the pair (b_j, c_j)
+L is the number of fixed points for the DH permutation corresponding to the pair (b_j, c_j); 
 '''
 #
 def list_num_fp(p):
     PR = list(prim_roots(p)); Shifts = list(range(p-1))
-    return [len(fixed_points(p, b, c)) for (b, c) in product(PR, Shifts)]
+    return [len(fixed_points(p, b, c)) for (b, c) in prod(PR, Shifts)]
 
+
+
+'''
+for a prime p, the pairs (b,c), where b is a primitive root and 0 \leq c \leq p-2 is an integer, 
+are organized in some order; the command  list_DH_perm_sage(p)  returns the list L;  the j-th entry of 
+L is the DH permutation corresponding to the pair (b_j, c_j) in the SageMath format
+WARNING: please apply this command only to very small primes
+'''
+#
+def list_DH_perm_sage(p):
+    return [DH_perm_sage(p, b, c) for (b, c) in prod(prim_roots(p), range(p-1))]
+
+'''
+for a permutation g, the command num_fp_sage(g) returns the number 
+of fixed points of g
+'''
+#tested
+def num_fp_sage(g):
+    aux = list(g.cycle_type( ))
+    return aux.count(1)
 
 '''
 for a prime p and an integers  0 \leq x, c \leq p-2, the command 
@@ -548,10 +586,10 @@ def gcpd1(d,m):
 def test_gcpd(n, N):
     out = [ ]
     T0 = time.time()
-    out = [gcpd(t[0], t[1]) for t in product(range(n,N), repeat = 2)]
+    out = [gcpd(t[0], t[1]) for t in prod(range(n,N), repeat = 2)]
     print('Time elapsed = ', time.time() - T0)
     T0 = time.time()
-    out1 = [gcpd1(t[0], t[1]) for t in product(range(n,N), repeat = 2)]
+    out1 = [gcpd1(t[0], t[1]) for t in prod(range(n,N), repeat = 2)]
     print('Time elapsed = ', time.time() - T0)
     return out==out1
 
