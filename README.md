@@ -1,6 +1,8 @@
 This repository is for the code related to Tommy Pham's master thesis. The current contributors to this repository are Vasily A. Dolgushev and Tommy Pham.
 So far we use README as the log of various updates and changes. Comments are given in the reversed chronological order: the most recent one is at the top. 
 
+Feb 3, 2026, TP: I updated the newest version of "DH_PermGeneral.sage." I completed the best_sequence function, which takes a prime p, a primitive b, an integer t, and beam_width, then returns the best sequence of length t.
+
 Feb 2, 2026, TP: I uploaded the newest version of "DH_PermGeneral.sage". It makes sense to look below the line 964. A couple of new functions are fixed_points_count_for_b(p,b),
 top_pairs_fixed_points(p, top, frac_threshold), power_map(p). I plan to use those functions for the function best_sequence(p, t), which computes the best sequence of 
 (b_t, c_t), ..., (b_0, -1). The fixed_points_count_for_b(p, b) functions runs in O(p), and power_map runs in O(euler_phi(p-1)(p-1)). 
