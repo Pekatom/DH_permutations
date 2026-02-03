@@ -23,6 +23,11 @@ from itertools import combinations as comb
 '''
 for instance, comb([1,2,3], 2) generates (1,2), (1,3) and (2,3)
 '''
+from heapq import nlargest
+
+'''
+this is for the function best_sequence
+'''
 
 from pickle import dump, load
 #this is for storing and loading the results
@@ -1042,23 +1047,47 @@ def power_map(p):
     return d  
 
 
+'''this function takes a prime p, primitive root b, an integer c, a power_map, and a SymmetricGroup then returns
+a DH'''
+
+def dh_perm_from_power_map(p, b, c, pm, G):
+    images0 = []
+    for x in range (p-1):
+        y= int(pm[(b,x)])
+        img = (y + int(c)) % (p-1)
+        images0.append(img)
+
+    return G([u + 1 for u in images0])
+
+
 ''' best_sequence takes a prime p and an integer t and returns a sequence
 (b_t,c_t),...,(b_0,c_0) that produces the most fixed points
-the function assume c_0 = -1
 '''
+        
+def best_sequence(p, b0, t, beam_width = 50):
+    pm = power_map(p)
+    G = SymmetricGroup(p-1)
 
-def best_sequence(p, b0, t):
-    power_map = power_map(p)
+    bases = sorted({k[0] for k in pm.keys()})
 
-    '''make a base perm
-        run loop p-1 times
-        i = 2, 
-        compute all perm and choose best sequence
-        store all perms in dictionary keys being sequences and store the best one somewhere
-        i = 3, 
-        use the perms stored to compute new perms
-        save new perms 
-        repeat till t times
-        '''
+    def score(perm):
+        return num_fp(perm)
 
+    states = []
+    for c in range(p-1):
+        perm0 = dh_perm_from_power_map(p, b0, c, pm, G)
+        states.append( (((b0,c),), perm0, score(perm0)))
+
+    for step in range(2, t+1):
+        pool = []
+        for seq, perm, sc in states:
+            for b in bases:
+                for c in range (p-1):
+                    new_seq = seq + ((b,c),)
+                    new_perm = perm * dh_perm_from_power_map(p,b,c,pm,G)
+                    pool.append((new_seq, new_perm, score(new_perm)))
+        states = nlargest(beam_width, pool, key=lambda s: s[2])
+        
+    return states
+    
 
