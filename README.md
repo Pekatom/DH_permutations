@@ -1,6 +1,17 @@
 This repository is for the code related to Tommy Pham's master thesis. The current contributors to this repository are Vasily A. Dolgushev and Tommy Pham.
 So far we use README as the log of various updates and changes. Comments are given in the reversed chronological order: the most recent one is at the top. 
 
+Feb 17, 2026, VD: the new version of "DH_Perm.sage" has the tested function best_pairs( , ); here is the info about this function: 
+for a prime p and a positive integer r, the command best_pairs(p,r)
+returns the tuple (m, out) m is the maximum of the set 
+
+{number of fixed points(\tau_{p,b,c}^r) |  b is a primitive root mod p and 0 \le c \le p-2}
+
+and out is the list of pairs (b,c), "primitive root, shift", such that 
+the number of fixed points of \tau_{p,b,c}^r is m (the largest one);
+I tested this function using the function testing best_pairs( , )
+
+
 Feb 3, 2026, TP: I updated the newest version of "DH_PermGeneral.sage." I completed the best_sequence function, which takes a prime p, a primitive b, an integer t, and beam_width, then returns the best sequence of length t.
 
 Feb 2, 2026, TP: I uploaded the newest version of "DH_PermGeneral.sage". It makes sense to look below the line 964. A couple of new functions are fixed_points_count_for_b(p,b),
