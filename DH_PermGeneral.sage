@@ -1064,7 +1064,7 @@ def dh_perm_from_power_map(p, b, c, pm, G):
 (b_t,c_t),...,(b_0,c_0) that produces the most fixed points
 '''
         
-def best_sequence(p, b0, t, beam_width = 50):
+def best_sequence(p, b0, t, beam_width):
     pm = power_map(p)
     G = SymmetricGroup(p-1)
 
@@ -1089,5 +1089,30 @@ def best_sequence(p, b0, t, beam_width = 50):
         states = nlargest(beam_width, pool, key=lambda s: s[2])
         
     return states
+
+'''best_pairs_b_c takes a prime p and an integer t, then returns a sorted list containing
+the best pairs (b,c) that we can compose t times to get the most number of fixed points'''
+
+def best_pairs_b_c(p, t):
+    lst = primitive_root_list(p)
+    top_pairs = []
+    pm = power_map(p)
+    G = SymmetricGroup(p-1)
+    candidates = []
     
+    def score(perm):
+        return num_fp(perm)
+
+    for b in lst:
+        for c in range (0,p):
+            perm = dh_perm_from_power_map(p, b, c, pm, G)
+            candidates.append(((b,c), perm, score(perm)))
+
+    for i in range(len(candidates)):
+        perm = (candidates[i][1])^t
+        top_pairs.append((candidates[i][0], perm, score(perm)))
+
+    top_pairs.sort(key = lambda triple: triple[2], reverse = True)
+
+    return top_pairs
 
