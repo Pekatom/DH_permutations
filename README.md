@@ -1,7 +1,7 @@
 This repository is for the code related to Tommy Pham's master thesis. The current contributors to this repository are Vasily A. Dolgushev and Tommy Pham.
 So far we use README as the log of various updates and changes. Comments are given in the reversed chronological order: the most recent one is at the top. 
 
-Feb 17, 2026, TP: I uploaded the newest version of "DH_Perm_General.sage," which contains some new functions such that best_pairs_b_c. This function takes a prime p and an integer t and returns a sorted list that contains the best pairs (b,c) that gives the most number of fixed points after composing t times.
+Feb 17, 2026, TP: I uploaded the newest version of "DH_Perm_General.sage," which contains some new functions such as best_pairs_b_c. This function takes a prime p and an integer t and returns a sorted list that contains the best pairs (b,c) that gives the most number of fixed points after composing t times.
 
 Feb 17, 2026, VD: the new version of "DH_Perm.sage" has the tested function best_pairs( , ); here is the info about this function: 
 for a prime p and a positive integer r, the command best_pairs(p,r)
