@@ -257,8 +257,83 @@ of fixed points of g
 '''
 #tested
 def num_fp_sage(g):
+    d = g.parent().degree(); c = 0
+    for x in range(1, d+1):
+        if g(x)==x: c+=1
+    return c
+    
+
+'''
+this is a slower version of num_fp_sage( )...
+'''
+#tested
+def num_fp_sage_slow(g):
     aux = list(g.cycle_type( ))
     return aux.count(1)
+
+
+'''
+the following function allows us to test the time performance of num_fp_sage( ) and num_fp_sage_slow
+'''
+#for testing num_fp_sage( )
+def test_num_fp_sage(d, N):
+    L = [ ]; G = SG(d)
+    for a in range(N):
+        L.append(G.random_element())
+    T0 = time.time()
+    Test = [num_fp_sage(g) for g in L]
+    T = time.time()-T0
+    T0 = time.time()
+    Test_slow = [num_fp_sage_slow(g) for g in L]
+    T_slow = time.time()-T0
+    return (Test==Test_slow, T<T_slow, T, T_slow)
+
+'''
+for a prime p and a positive integer r, the command best_pairs(p,r)
+returns the tuple (m, out) m is the maximum of the set 
+
+{number of fixed points(\tau_{p,b,c}^r) |  b is a primitive root mod p and 0 \le c \le p-2}
+
+and out is the list of pairs (b,c), "primitive root, shift", such that 
+the number of fixed points of \tau_{p,b,c}^r is m (the largest one)
+'''
+#tested
+def best_pairs(p,r):
+    m = 0; out = []
+    for b in prim_roots(p):
+        for c in range(p-1):
+            g = DH_perm_sage(p, b, c)
+            new = num_fp_sage(g**r)
+            if new>=m:
+                if new==m: out.append((b,c))
+                else: out =[(b,c)]; m = new
+    return (m, out)
+
+
+'''
+Usually, best_pairs_slow( , ) runs slower than best_pairs( , )
+'''
+#tested
+def best_pairs_slow(p,r):
+    L = list_DH_perm_sage(p)
+    m = max({num_fp_sage(g**r) for g in L})
+    out = []
+    for b in prim_roots(p):
+        for c in range(p-1):
+            g = DH_perm_sage(p, b, c)
+            if num_fp_sage(g**r)==m: out.append((b,c))
+    return (m, out)
+
+#for testing best_pairs( , )
+def test_best_pairs(p,r):
+    T0 = time.time()
+    R = best_pairs(p,r)
+    T = time.time()-T0
+    T0 = time.time()
+    R_slow = best_pairs_slow(p,r)
+    T_slow = time.time()-T0
+    return (R==R_slow, T < T_slow, T, T_slow)
+
 
 '''
 for a prime p and an integers  0 \leq x, c \leq p-2, the command 
