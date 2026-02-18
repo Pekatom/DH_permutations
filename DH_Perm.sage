@@ -335,6 +335,20 @@ def test_best_pairs(p,r):
     return (R==R_slow, T < T_slow, T, T_slow)
 
 
+#wait! what if we do not shift?
+def best_pairs_no_c(p,r, c=0):
+    m = 0; out = []
+    for b in prim_roots(p):
+        g = DH_perm_sage(p, b, c)
+        new = num_fp_sage(g**r)
+        if new>=m:
+            if new==m: out.append((b,c))
+            else: out =[(b,c)]; m = new
+    return (m, out)
+
+
+
+
 '''
 for a prime p and an integers  0 \leq x, c \leq p-2, the command 
 is_vul_exp(x, p, c) returns True if x is a vulnerable exponent relative to the pair (p, c); 
