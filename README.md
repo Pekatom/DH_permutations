@@ -1,9 +1,12 @@
 This repository is for the code related to Tommy Pham's master thesis. The current contributors to this repository are Vasily A. Dolgushev and Tommy Pham.
 So far we use README as the log of various updates and changes. Comments are given in the reversed chronological order: the most recent one is at the top. 
 
+Mar 11, 2026, TP: I uploaded a text file containing the list of elements of the form
+((b1, c1), (b2, c2), cycle type of the permutation \tau_{173, b1,c1} \composed \tau_{173, b2, c2}), for p = 173. Notice that 24 distinct primitive roots are appearing in the file, and whenever a primitive root appears, its inverse appears as well. However, for this particular prime, composing \tau_{173, b, c1} with \tau_{173, b^{-1}, c2} does not always produce the most number of cycles. Note also that 173 is not a safe prime. 
+
 Feb 17, 2026, VD: Only a minor update in "DH_Perm.sage"...
 
-Feb 17, 2026, TP: I uploaded the newest version of "DH_Perm_General.sage," which contains some new functions such as best_pairs_b_c. This function takes a prime p and an integer t and returns a sorted list that contains the best pairs (b,c) that gives the most number of fixed points after composing t times.
+Feb 17, 2026, TP: I uploaded the newest version of "DH_Perm_General.sage," which contains some new functions such as best_pairs_b_c. This function takes a prime p and an integer t and returns a sorted list that contains the best pairs (b,c) that give the most number of fixed points after composing t times.
 
 Feb 17, 2026, VD: the new version of "DH_Perm.sage" has the tested function best_pairs( , ); here is the info about this function: 
 for a prime p and a positive integer r, the command best_pairs(p,r)
