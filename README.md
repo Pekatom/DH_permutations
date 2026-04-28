@@ -3,7 +3,7 @@ So far we use README as the log of various updates and changes. Comments are giv
 
 April 28, 2026, VD: I save the old version of "DH_Perm.sage" as "DH_Perm_April2026.sage" and uploaded the new version of DH_Perm. Here is the video about the new version: 
 
-LINK
+https://temple.zoom.us/rec/share/SZ4W7POPn5yl8z5g1EBcm-uq873eccW6RhMQxKUVbHyx9nzI25y_IKoJuNtkrGSE.3kQqoS95AfAz8waN?startTime=1777400526000
 
 Mar 11, 2026, TP: I uploaded a text file containing the list of elements of the form
 ((b1, c1), (b2, c2), cycle type of the permutation \tau_{173, b1,c1} \composed \tau_{173, b2, c2}), for p = 173. Notice that 24 distinct primitive roots are appearing in the file, and whenever a primitive root appears, its inverse appears as well. However, for this particular prime, composing \tau_{173, b, c1} with \tau_{173, b^{-1}, c2} does not always produce the most number of cycles. Note also that 173 is not a safe prime. 
