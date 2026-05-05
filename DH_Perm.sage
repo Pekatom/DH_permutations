@@ -54,6 +54,11 @@ def load_now(FILE):
     FO = open(FILE,'rb')
     return load(FO)
 
+'''
+for example, let us load 124,849 safe primes...
+'''
+SP = load_now('ManySafePrimes') #SP starts with 11
+
 
 '''
 for a list L and a tuple t = (n_0, n_1, ..., n_q) of non-negative integers < len(L), the 
@@ -262,7 +267,42 @@ for all triple (u, c, v), where u is a unit modulo (p-1) c \in {0,...,(p-2)} and
 def gener_unlock_perm(p):
     for (u, c, v) in prod(units_mod(p-1), range(p-1), range(1,p)): yield unlock_perm(u, c, v, p)
 
+'''
+I experiment with pairs (c, v) in {0,1,..., p-2} \times {1,..., p-1} and 
+the "unlocking" permutations corresponding to (1, c, v); so far, I do not see any patterns...
+'''
+#
+def best_pairs(p):
+    tau = DH_key(p)
+    Pr = [unlock_perm(1, c, v, p)*tau for (c,v) in prod(range(p-1), range(1, p))]
+    m = max({num_fp(g) for g in Pr}); print('   the largest number of fixed points  = ', m)
+    out = []
+    for (c, v) in prod(range(p-1), range(1, p)):
+        if num_fp(unlock_perm(1, c, v, p)*tau)==m: out.append((c,v))
+    return out
 
 
+'''
+let p be prime and r be an even positive integer; 
+gener_unlock_tup(r, p) a generator of tuples (k_0, k_1, ..., k_{r-1}) 
+such that 0 \leq k_0, k_{r-1} \leq p-2, 1 \leq k_1, k_2, ..., k_{r-2} \leq p-2, 
+'''
+#tested
+def gener_unlock_tup(r, p):
+    for k0 in range(p-1):
+        for t in prod(range(1, p-1), repeat=(r-2)):
+            for k_last in range(p-1):
+                yield (k0,)+t+(k_last,)
+                
+'''
+a,  b are permutations of degree (p-1); for a tuple t = (k0, k1, ...) of even length r, 
+the command tuple2perm(t, a, b) returns the permutation a^{k0}*b^{k1}*... (computer order); 
+in my experiments, I tried a = (1,2,..., p-1) and b(x) := g_p*x, where g_p is the smallest primitive root
+'''
+#tested
+def tuple2perm(t, a, b):
+    pt = (a,b)
+    aux = tuple(pt[j%2]**t[j] for j in range(len(t)))
+    return product(aux)
 
 
