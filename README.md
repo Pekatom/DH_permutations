@@ -1,6 +1,8 @@
 This repository is for the code related to Tommy Pham's master thesis. The current contributors to this repository are Vasily A. Dolgushev and Tommy Pham.
 So far we use README as the log of various updates and changes. Comments are given in the reversed chronological order: the most recent one is at the top. 
 
+May 5, 2026, VD: I uploaded the file "Logjam_paper.pdf"; as far as I understand, this is the official description of the logjam attack.
+
 May 5, 2026, VD: In the updated version of "DH_Perm.sage", I have two new functions gener_unlock_tup( , ) and tuple2perm( , , );
 I found unlocking tuples of length r = 4 for (mostly safe) primes p \leq 107; so far, I do not see any paterns...
 
