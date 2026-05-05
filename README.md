@@ -1,6 +1,9 @@
 This repository is for the code related to Tommy Pham's master thesis. The current contributors to this repository are Vasily A. Dolgushev and Tommy Pham.
 So far we use README as the log of various updates and changes. Comments are given in the reversed chronological order: the most recent one is at the top. 
 
+May 5, 2026, VD: In the updated version of "DH_Perm.sage", I have two new functions gener_unlock_tup( , ) and tuple2perm( , , );
+I found unlocking tuples of length r = 4 for (mostly safe) primes p \leq 107; so far, I do not see any paterns...
+
 April 28, 2026, VD: I save the old version of "DH_Perm.sage" as "DH_Perm_April2026.sage" and uploaded the new version of DH_Perm. Here is the video about the new version: 
 
 https://temple.zoom.us/rec/share/SZ4W7POPn5yl8z5g1EBcm-uq873eccW6RhMQxKUVbHyx9nzI25y_IKoJuNtkrGSE.3kQqoS95AfAz8waN?startTime=1777400526000
