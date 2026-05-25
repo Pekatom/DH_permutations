@@ -2,7 +2,12 @@ This repository is for the code related to Tommy Pham's master thesis. The curre
 So far we use README as the log of various updates and changes. Comments are given in the reversed chronological order: the most recent one is at the top. 
 
 May 25, 2026, VD: I uploaded two interesting plots "rel_max_nfp_for120_safe_primes9839.png" and 
-
+"rel_max_nfp_for120_safe_primes32843.png"; for both plots, I considered the compositons of the key DH permutation with 
+an arbitrary shift; for each prime I computed this number: 100 times the largest number of fixed points in this family 
+of permutations divided by (p-1); in the first plot, the horizontal axis represents 120 safe primes between 
+9839 and 25799 (including both primes) and the vertical axis shows the above percetage; in the second plot, the horizontal 
+axis represents 100 safe primes between 32843 and 47963 (including these primes) and the vertical axis shows the above 
+percetage: 100* max number of fixed points/(p-1). 
 
 May 5, 2026, VD: I uploaded the file "Logjam_paper.pdf"; as far as I understand, this is the official description of the logjam attack.
 
