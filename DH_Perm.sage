@@ -57,7 +57,7 @@ def load_now(FILE):
 '''
 for example, let us load 124,849 safe primes...
 '''
-SP = load_now('ManySafePrimes') #SP starts with 11
+# SP = load_now('ManySafePrimes') #SP starts with 11
 
 
 '''
@@ -306,3 +306,102 @@ def tuple2perm(t, a, b):
     return product(aux)
 
 
+'''
+PLEASE IGNORE THESE COMMENTED CODES FOR NOW!
+def N_order(N, p, b):
+    e = (p-1)//N
+    candidate = []
+
+    for x in range(1, N+1):
+        if power_mod(b, x, p) == x:
+            print(x)
+
+
+def mul_order_given_factorization(x, p, factors):
+    N = p-1
+    d = N
+    
+    for q,_ in factors:
+        while d%q == 0 and power_mod(x, d // q, p) == 1:
+            d //= q 
+    
+    return d 
+
+def vulnerable_exponents_fast(p):
+    N = p-1
+    beta = primitive_root(p)
+    factors = factor(p-1)
+   # log_table ={}
+    
+    value = 1
+    '''
+    for t in range(N):
+        log_table[value] = t #beta^t = value mod p 
+        value = (value*beta) % p 
+    '''
+    candidate = []
+
+    for x in range(1, p-1):
+    #    t = log_table[x +1]
+
+        if Mod(x,p).multiplicative_order() * gcd(x,p) == (p-1) :
+            candidate.append(x)
+    
+    return candidate
+'''
+
+def find_x(p, b):
+    candidate = vulnerable_exponents_fast(p)
+    val = []
+
+    for x in candidate:
+        if power_mod(b, x, p) == x + 1:
+            val.append(x)
+
+    return val    
+
+
+
+''' the function f(x,p) takes an exponent x from 1 to p-2 and returns 
+a primitive root b_x such that rem(b^x, p) = x +1 mod p '''
+
+def f(x, p):
+    if order_mod(x +1, p) != (p-1)//gcd(x, p-1):
+        return -1 
+    else:
+        if gcd(x, p -1) == 1:
+            u = inverse_mod(x, p -1 )
+            return power_mod(x + 1, u, p )
+        else:
+            r = x//2 
+            u = inverse_mod(r, p)
+            y = power_mod(x + 1, u, p)
+            s = (p+1)//4
+            b_x = power_mod(y, s, p)
+            if mod(b_x, p).multiplicative_order() == p-1:
+                return b_x
+            else:
+                return power_mod(-y, s, p)
+    
+
+'''the function secret_exp_DH_generator(p) takes a prime p and k (if no k value is input,
+it will default to k = 256) and returns a secret exponent x for the DH key exchange protocol
+'''
+
+
+def secret_exp_DH_generator(p, k =256):
+    s = randint(1, (p-1)//4)
+    secret = ZZ(0)
+    x = 1 
+    bits_generated = 0
+
+    while(secret.nbits() < k):
+        bx = f(s + x, p)
+
+        if bx != -1:
+            bit = ZZ(bx % 2) 
+            secret= (secret << 1) + bit
+            bits_generated += 1
+        x += 1
+
+    return secret
