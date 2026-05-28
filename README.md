@@ -1,6 +1,11 @@
 This repository is for the code related to Tommy Pham's master thesis. The current contributors to this repository are Vasily A. Dolgushev and Tommy Pham.
 So far we use README as the log of various updates and changes. Comments are given in the reversed chronological order: the most recent one is at the top. 
 
+May 28, 2026, TP: I uploaded my version of DH_Perm.sage, which includes two new functions. The first function is f(x,p), 
+which takes an exponent x and returns a primitive root b_x such that rem(b_x^x, p) = x + 1 mod p. The second function is secret_exp_DH_generator(p, k = 256), 
+which takes a prime p and an integer k. If no value of k is provided, the function assumes k = 256 by default. It then returns a secret exponent x_A or x_B for the DH key exchange protocol.
+Also, I accidentally uploaded the file as DH_Perm.sage initially, which overwrote the file that Dr. Dolgushev had uploaded. However, I have since renamed my file to DH_Perm_TP.sage.
+
 May 25, 2026, VD: I uploaded two interesting plots "rel_max_nfp_for120_safe_primes9839.png" and 
 "rel_max_nfp_for120_safe_primes32843.png"; for both plots, I considered the compositons of the key DH permutation with 
 an arbitrary shift; for each prime I computed this number: 100 times the largest number of fixed points in this family 
