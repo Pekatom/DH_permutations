@@ -1,6 +1,8 @@
 This repository is for the code related to Tommy Pham's master thesis. The current contributors to this repository are Vasily A. Dolgushev and Tommy Pham.
 So far we use README as the log of various updates and changes. Comments are given in the reversed chronological order: the most recent one is at the top. 
 
+June 11, 2026: I uploaded experimental results of estimating P(DH Permutations having k fixed points) -> 1/(e * k!) as p -> infinity. I will add more details about the plots later. 
+
 May 28, 2026, TP: I uploaded my version of DH_Perm.sage, which includes two new functions. The first function is f(x,p), 
 which takes an exponent x and returns a primitive root b_x such that rem(b_x^x, p) = x + 1 mod p. The second function is secret_exp_DH_generator(p, k = 256), 
 which takes a prime p and an integer k. If no value of k is provided, the function assumes k = 256 by default. It then returns a secret exponent x_A or x_B for the DH key exchange protocol.
