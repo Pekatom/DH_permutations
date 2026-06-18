@@ -1,7 +1,12 @@
 This repository is for the code related to Tommy Pham's master thesis. The current contributors to this repository are Vasily A. Dolgushev and Tommy Pham.
 So far we use README as the log of various updates and changes. Comments are given in the reversed chronological order: the most recent one is at the top. 
 
-June 11, 2026: I uploaded experimental results of estimating P(DH Permutations having k fixed points) -> 1/(e * k!) as p -> infinity. I will add more details about the plots later. 
+June 11, 2026: I uploaded experimental results estimating P(DH permutations having k fixed points)→1/(e⋅k!) as p→∞. In the abs_diff_actual_decimal_scale plot, 
+I computed the ratio #{permutations having k fixed points} / #{all tested permutations} and plotted the number of fixed points on the x-axis, while ∣1/(ek!)−ratio∣
+is on the y-axis. I considered all 200 families from the first 200 safe primes. Here, a family means that for a given prime p, the primitive roots and shifts c vary.
+For the convergence_max_error_200_safe_primes plot, I computed the same ratio as in the previous plot, but the x-axis is now the number of safe primes used, and the 
+y-axis shows the maximum absolute error between the ratio and 1/(ek!). For the exact_error_vs_p plot, I used the exact summation formula instead of the limiting formula
+1/(ek!). The rest consists of computing the mean, variance, and total variation distance of the number of fixed points for the first 200 safe primes.
 
 May 28, 2026, TP: I uploaded my version of DH_Perm.sage, which includes two new functions. The first function is f(x,p), 
 which takes an exponent x and returns a primitive root b_x such that rem(b_x^x, p) = x + 1 mod p. The second function is secret_exp_DH_generator(p, k = 256), 
