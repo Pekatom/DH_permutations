@@ -1,8 +1,11 @@
 This repository is for the code related to Tommy Pham's master thesis. The current contributors to this repository are Vasily A. Dolgushev and Tommy Pham.
 So far we use README as the log of various updates and changes. Comments are given in the reversed chronological order: the most recent one is at the top. 
 
-June 18, 2026: I uploaded the fp_rou_c_tau_87620_primes plot. In this plot, for a given prime p, I computed the number of 
-fixed points of rho^{-c} \circ tau_p for the first 87620 primes. 
+June 18, 2026: June 18, 2026: I uploaded the fp_rou_c_tau_87620_primes plot. In this plot, for a given prime p, I computed the number of fixed points 
+of rho^{-c} \circ tau_p for the first 87,620 primes. I also uploaded good_pairs_p1307, good_pairs_sp719, and normalized_good_pairs_30sp. In those plots, 
+I computed the number of fixed points of rho^j \circ mu_2 \circ rho^k \circ tau_p and plotted the pairs (j,k) that give the largest number of fixed points. 
+The good_pairs_p1307 plot is only for the prime 1307, the second plot is for the safe prime 719, and the last plot is for the first 30 safe primes.
+I normalized the last plot by dividing by p-1, so all values are between 0 and 1.
 
 June 11, 2026: I uploaded experimental results estimating P(DH permutations having k fixed points)→1/(e⋅k!) as p→∞. In the abs_diff_actual_decimal_scale plot, 
 I computed the ratio #{permutations having k fixed points} / #{all tested permutations} and plotted the number of fixed points on the x-axis, while ∣1/(ek!)−ratio∣
