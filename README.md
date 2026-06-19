@@ -1,13 +1,18 @@
 This repository is for the code related to Tommy Pham's master thesis. The current contributors to this repository are Vasily A. Dolgushev and Tommy Pham.
 So far we use README as the log of various updates and changes. Comments are given in the reversed chronological order: the most recent one is at the top. 
 
-June 18, 2026: June 18, 2026: I uploaded the fp_rou_c_tau_87620_primes plot. In this plot, for a given prime p, I computed the number of fixed points 
+
+June 19, 2026, TP: I uploaded the latest version of DH_Perm_TP.sage. The main function that I used to compute the number of fixed points for 
+rho^{-c} \circ tau_p was num_fp_rho_c_tau(p). The function that I used to compute optimal pairs (j,k) for \rho^{j} \circ mu_2 \circ \rho^{k} \circ tau_p
+was unlocking_search(p).
+
+June 18, 2026, TP: I uploaded the fp_rou_c_tau_87620_primes plot. In this plot, for a given prime p, I computed the number of fixed points 
 of rho^{-c} \circ tau_p for the first 87,620 primes. I also uploaded good_pairs_p1307, good_pairs_sp719, and normalized_good_pairs_30sp. In those plots, 
 I computed the number of fixed points of rho^j \circ mu_2 \circ rho^k \circ tau_p and plotted the pairs (j,k) that give the largest number of fixed points. 
 The good_pairs_p1307 plot is only for the prime 1307, the second plot is for the safe prime 719, and the last plot is for the first 30 safe primes.
 I normalized the last plot by dividing by p-1, so all values are between 0 and 1.
 
-June 11, 2026: I uploaded experimental results estimating P(DH permutations having k fixed points)→1/(e⋅k!) as p→∞. In the abs_diff_actual_decimal_scale plot, 
+June 11, 2026, TP: I uploaded experimental results estimating P(DH permutations having k fixed points)→1/(e⋅k!) as p→∞. In the abs_diff_actual_decimal_scale plot, 
 I computed the ratio #{permutations having k fixed points} / #{all tested permutations} and plotted the number of fixed points on the x-axis, while ∣1/(ek!)−ratio∣
 is on the y-axis. I considered all 200 families from the first 200 safe primes. Here, a family means that for a given prime p, the primitive roots and shifts c vary.
 For the convergence_max_error_200_safe_primes plot, I computed the same ratio as in the previous plot, but the x-axis is now the number of safe primes used, and the 
