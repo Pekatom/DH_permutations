@@ -203,8 +203,16 @@ smallest primitive root modulo p
 '''
 #
 def DH_key(p):
-    g = primitive_root(p)
-    aux = [power_mod(g, x, p) for x in range(1, p-1)] + [1]
+    g_p = primitive_root(p)
+    current = g_p
+    aux = []
+
+    for x in range(1, p-1):
+        aux.append(current)
+        current = (current * g_p) % p 
+    
+    aux.append(1)
+
     return SymmetricGroup(p-1)(aux)
 
 '''
@@ -306,49 +314,47 @@ def tuple2perm(t, a, b):
     return product(aux)
 
 
-'''
-PLEASE IGNORE THESE COMMENTED CODES FOR NOW!
-def N_order(N, p, b):
-    e = (p-1)//N
-    candidate = []
-
-    for x in range(1, N+1):
-        if power_mod(b, x, p) == x:
-            print(x)
-
-
-def mul_order_given_factorization(x, p, factors):
-    N = p-1
-    d = N
-    
-    for q,_ in factors:
-        while d%q == 0 and power_mod(x, d // q, p) == 1:
-            d //= q 
-    
-    return d 
-
-def vulnerable_exponents_fast(p):
-    N = p-1
-    beta = primitive_root(p)
-    factors = factor(p-1)
-   # log_table ={}
-    
-    value = 1
-    '''
-    for t in range(N):
-        log_table[value] = t #beta^t = value mod p 
-        value = (value*beta) % p 
-    '''
-    candidate = []
-
-    for x in range(1, p-1):
-    #    t = log_table[x +1]
-
-        if Mod(x,p).multiplicative_order() * gcd(x,p) == (p-1) :
-            candidate.append(x)
-    
-    return candidate
-'''
+## PLEASE IGNORE THESE COMMENTED CODES FOR NOW!
+#def N_order(N, p, b):
+#    e = (p-1)//N
+#    candidate = []
+#
+#    for x in range(1, N+1):
+#        if power_mod(b, x, p) == x:
+#            print(x)
+#
+#
+#def mul_order_given_factorization(x, p, factors):
+#    N = p-1
+#    d = N
+#    
+#    for q,_ in factors:
+#        while d%q == 0 and power_mod(x, d // q, p) == 1:
+#            d //= q 
+#    
+#    return d 
+#
+#def vulnerable_exponents_fast(p):
+#    N = p-1
+#    beta = primitive_root(p)
+#    factors = factor(p-1)
+#   # log_table ={}
+#    
+#    value = 1
+#    '''
+#    for t in range(N):
+#        log_table[value] = t #beta^t = value mod p 
+#        value = (value*beta) % p 
+#    '''
+#    candidate = []
+#
+#    for x in range(1, p-1):
+#    #    t = log_table[x +1]
+#
+#        if Mod(x,p).multiplicative_order() * gcd(x,p) == (p-1) :
+#            candidate.append(x)
+#    
+#    return candidate
 
 def find_x(p, b):
     candidate = vulnerable_exponents_fast(p)
@@ -405,3 +411,183 @@ def secret_exp_DH_generator(p, k =256):
         x += 1
 
     return secret
+
+'''the many_safe_prime function returns the first 1000 safe primes in a list'''
+
+def many_safe_prime():
+
+    p = 5
+    sp = [] 
+
+    while len(sp) < 1000:
+        sp.append(p)
+        p = next_safe_prime(p)
+
+    return sp 
+
+'''the function prim_root_list returns a list of all primitive roots relative to a given prime p'''
+    
+def prim_root_list(p):
+    b = primitive_root(p)
+    list = []
+    list.append(b)
+
+    for k in range(3, p-1, 2):
+        if gcd(k, p - 1) == 1:
+            list.append(power_mod(b, k, p))
+
+    return list
+
+'''the function fixed_points_count takes a prime p and returns a dictionary dic, where its key is the 
+number of fixed points and its corresponding value is the number of permutations having that many fixed points. 
+Here I consider a family to be all primitive roots and all c shifts. '''
+
+def fixed_points_count(p):
+    n = p - 1
+    prim_list = prim_root_list(p)
+    dic = {}
+
+    for b in prim_list:
+        # fixed_for_c[c] = number of fixed points of tau_{p,b,c}
+        fixed_for_c = [0] * n
+
+        current = b % p   # b^1 mod p
+
+        for x in range(1, p):
+
+            c = (x - current) % n
+            fixed_for_c[c] += 1
+
+            current = (current * b) % p
+
+        for count in fixed_for_c:
+            dic[count] = dic.get(count, 0) + 1
+
+    return dic
+
+
+'''the below functions from add_to_total_dic to total_variation_for_prime were for experimental results that I 
+uploaded on Github'''
+
+def add_to_total_dic(total_dic, dic):
+    for k in dic.keys():
+        total_dic[k] = total_dic.get(k, 0) + dic[k]
+
+def max_abs_error(total_dic, max_k = 12):
+    total = sum(total_dic.values())
+    errors = []
+
+    for k in range(0, max_k +1 ):
+        observed = total_dic.get(k, 0) / total
+        expected = N(1 / ( e * factorial(k)))
+        errors.append(abs(observed - expected))
+    
+    return max(errors)
+
+def max_error_for_prime(p, max_k=12):
+    dic = fixed_points_count(p)
+    total = sum(dic.values())
+
+    errs = []
+    for k in range(0, max_k+1):
+        observed = dic.get(k,0) /total
+        expected = N(1.0 / (e * factorial(k)))
+        errs.append(abs(observed - expected))
+    
+    return max(errs)
+
+def mean_variance_fixed_points(p):
+    dic = fixed_points_count(p)
+    total = sum(dic.values())
+
+    mean = sum(k * dic[k] for k in dic.keys()) / total
+
+    second_moment = sum((k^2) * dic[k] for k in dic.keys()) / total
+    variance = second_moment - mean^2
+
+    return N(mean), N(variance)
+
+def random_perm_exact_prob(n, k):
+    if k > n:
+        return 0
+    return N((1/ factorial(k)) * sum((-1)^j / factorial(j) for j in range(0, n-k+1)))
+
+def exact_error_for_prime(dic, p, max_k = 12):
+    total = sum(dic.values())
+    n = p-1
+    
+    errors = []
+
+    for k in range(0, max_k + 1):
+        observed = dic.get(k, 0) / total
+        expected = random_perm_exact_prob(n, k)
+        errors.append(abs(observed - expected))
+
+    return max(errors)
+
+def total_variation_for_prime(dic, p, max_k=12):
+    total = sum(dic.values())
+
+    tv = 0
+
+    for k in range(0, max_k + 1):
+        observed = dic.get(k, 0) / total
+        expected = N(exp(-1) / factorial(k))
+        tv += abs(observed - expected)
+    
+    return 0.5 * tv
+
+
+'''the function longest_perm returns the longest permutation, namely, rho = (1 2 3 ... p-1)
+def longest_perm(p):
+    aux = [(x+1) for x in range(1, p-1)] + [1]
+    return SymmetricGroup(p-1)(aux)
+
+'''the function num_fp_rho_c_tau takes a prime p and returns the max number of fixed points for 
+rho^{-c} \circ tau_p, where 0 <= c <= p-2 and tau_p = rem(g_p^x, p), where g_p is the smallest
+primitive root relative to p'''
+
+def num_fp_rho_c_tau(p):
+    g_p = primitive_root(p)
+    fixed_for_c = [0] * (p-1)
+
+    current = g_p % p   # g_p^1 mod p
+
+    for x in range(1, p):
+        c = (current - x ) % (p-1)
+        fixed_for_c[c] += 1
+        current = (current * g_p) % p
+
+    return max(fixed_for_c)
+
+'''the function unlocking_search takes a prime p and returns the quadruples (j, k, count, p), where
+count is the number of fixed points corresponding to the pair (j,k), p is the prime being tested.
+The pair (j,k) makes the permutation rho^{j} \circ mu_2 \circ rho^{k} \circ tau_p have the 
+most number of fixed points'''
+
+def unlocking_search(p):
+    mu_2 = star(2, p)
+    rho = longest_perm(p)
+    key_perm = DH_key(p)
+
+    first_half = mu_2
+    second_half = key_perm
+    optimal_pair = []
+    max_fp = -1 
+
+    for k in range(1, p-1):
+        second_half = second_half * rho
+        for j in range(1, p-1):
+            first_half = first_half * rho
+            perm = second_half * first_half
+            count = num_fp(perm)
+            if max_fp < count:
+                optimal_pair = []
+                max_fp = count
+                optimal_pair.append((j , k, count, p))
+            elif count == max_fp:
+                optimal_pair.append((j, k, count, p))
+        first_half = mu_2
+    
+    return optimal_pair
+            
