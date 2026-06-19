@@ -538,7 +538,7 @@ def total_variation_for_prime(dic, p, max_k=12):
     return 0.5 * tv
 
 
-'''the function longest_perm returns the longest permutation, namely, rho = (1 2 3 ... p-1)
+'''the function longest_perm returns the longest permutation, namely, rho = (1 2 3 ... p-1)'''
 def longest_perm(p):
     aux = [(x+1) for x in range(1, p-1)] + [1]
     return SymmetricGroup(p-1)(aux)
