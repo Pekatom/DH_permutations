@@ -1,6 +1,7 @@
 This repository is for the code related to Tommy Pham's master thesis. The current contributors to this repository are Vasily A. Dolgushev and Tommy Pham.
 So far we use README as the log of various updates and changes. Comments are given in the reversed chronological order: the most recent one is at the top. 
 
+June 23, 2026, VD: I experimented with the function num_fp_rho_c_tau( ) that returns the largest number of fixed points for the family of permutations shift_c \circ tau_p (0 \leq c \leq p-2); for primes p > 30,894,959, the functions usually returns 10 (and only occasionally 11 or 12).
 
 June 19, 2026, TP: I uploaded the latest version of DH_Perm_TP.sage. The main function that I used to compute the number of fixed points for 
 rho^{-c} \circ tau_p was num_fp_rho_c_tau(p). The function that I used to compute optimal pairs (j,k) for \rho^{j} \circ mu_2 \circ \rho^{k} \circ tau_p
