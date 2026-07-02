@@ -1,6 +1,12 @@
 This repository is for the code related to Tommy Pham's master thesis. The current contributors to this repository are Vasily A. Dolgushev and Tommy Pham.
 So far we use README as the log of various updates and changes. Comments are given in the reversed chronological order: the most recent one is at the top. 
 
+July 2, 2026, TP: I uploaded some plots I plotted. In the optimal_triples_12sp.png plot, I plotted the optimal triples (i, j, k) 
+in rho^i \circ mu_2 \circ rho^j \circ mu_2 \circ rho^k \circ tau_p that gives that permutation the largest number of fixed points. 
+Note that this was for the first 12 safe primes. In the optimal_triples_prime_47, I did the same thing but only for prime 47.
+In the optimal_triples_rho_prime_23/47.png plot, I plotted the optimal triples 
+(i, j, k) in rho^i \circ tau_p \circ \rho^j \circ tau_p \circ rho^k \circ tau_p/
+
 June 23, 2026, VD: for primes 81,373,367 \leq p \leq 81,373,823, the values of num_fp_rho_c_tau() are mostly 11; there are 
 occasional 10's and 12's...
 
