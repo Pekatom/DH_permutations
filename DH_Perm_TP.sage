@@ -538,7 +538,7 @@ def total_variation_for_prime(dic, p, max_k=12):
     return 0.5 * tv
 
 
-'''the function longest_perm returns the longest permutation, namely, rho = (1 2 3 ... p-1)'''
+'''the function longest_perm returns the longest permutation, namely, rho = (1 2 3 ... p-1)
 def longest_perm(p):
     aux = [(x+1) for x in range(1, p-1)] + [1]
     return SymmetricGroup(p-1)(aux)
@@ -559,6 +559,28 @@ def num_fp_rho_c_tau(p):
         current = (current * g_p) % p
 
     return max(fixed_for_c)
+
+'''num_fp_rho_c_tau_fast is a faster version of num_fp_rho_c_tau'''
+
+def num_fp_rho_c_tau_fast(p):
+    p = int(p)
+    g_p = int(primitive_root(p))
+    m = p - 1r
+
+    fixed_for_c = [0r] * m
+    current = g_p
+
+    for x in range(1r, p):
+        c = current - x
+
+        if c < 0r:
+            c += m
+
+        fixed_for_c[c] += 1r
+        current = (current * g_p) % p
+
+    return max(fixed_for_c)
+
 
 '''the function unlocking_search takes a prime p and returns the quadruples (j, k, count, p), where
 count is the number of fixed points corresponding to the pair (j,k), p is the prime being tested.
