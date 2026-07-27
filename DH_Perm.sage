@@ -232,18 +232,18 @@ dlog(y, p, D) returns the value \tau^{-1}_p(y); the output is an integer 1 \leq 
 note that this a very inefficient way to compute the value of the discrete logarithm... 
 '''
 #tested
-def dlog(y, p, D=key_dict):
+def dlog(y, p, D):
     tau = D[p]
     for x in range(1, p):
         if D[p](x)==y: return x
  
 '''
 p is a prime integer and d is an integer > 1; 
-the command list_remainders(p, d, D=key_dict) returns the list L, 
+the command list_remainders(p, d, D) returns the list L, 
 where L[(y-1)] is the remainder of division of dlog(y, p) by d
 ''' 
 #
-def list_remainders(p, d, D=key_dict):
+def list_remainders(p, d, D):
     return [dlog(y, p, D)%d for y in range(1,p)]
     
 
