@@ -1,6 +1,8 @@
 This repository is for the code related to Tommy Pham's master thesis. The current contributors to this repository are Vasily A. Dolgushev and Tommy Pham.
 So far we use README as the log of various updates and changes. Comments are given in the reversed chronological order: the most recent one is at the top.
 
+July 27, 2026, VD: I uploaded the sage script 'DH_Perm.sage'; unfortunately, I am not allowed to upload the storage file 'key_DH_dict' to our GitHub repository (it is too large); so I commented the line where I upload the object stored in 'key_DH_dict' and I changed the pieces of code where I use this object
+
 July 27, 2026, VD: I uploaded the storage file 'ManySafePrimes'; the file contains 124,849 safe primes starting with 11; the sage script 'DH_Perm.sage' needs this storage file
 
 July 24, 2026, TP: I uploaded the most up-to-date DH_Perm_TP script. In the script, there is a new function called
