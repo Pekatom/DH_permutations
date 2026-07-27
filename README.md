@@ -1,5 +1,7 @@
 This repository is for the code related to Tommy Pham's master thesis. The current contributors to this repository are Vasily A. Dolgushev and Tommy Pham.
-So far we use README as the log of various updates and changes. Comments are given in the reversed chronological order: the most recent one is at the top. 
+So far we use README as the log of various updates and changes. Comments are given in the reversed chronological order: the most recent one is at the top.
+
+July 27, 2026, VD: I uploaded the storage file 'ManySafePrimes'; the file contains 124,849 safe primes starting with 11; the sage script 'DH_Perm.sage' needs this storage file
 
 July 24, 2026, TP: I uploaded the most up-to-date DH_Perm_TP script. In the script, there is a new function called
 "num_fp_rho_c_tau_fast", which I have tested and observed better performance than the "num_fp_rho_c_tau" function. 
