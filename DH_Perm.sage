@@ -61,9 +61,9 @@ SP = load_now('ManySafePrimes') #SP starts with 11
 
 '''
 let us also load the (large) dictionary of the key DH permutations
-'''
 key_dict = load_now('key_DH_dict')
-
+#you need the storage file 'key_DH_dict' for the above line to work...
+'''
 
 '''
 for a list L and a tuple t = (n_0, n_1, ..., n_q) of non-negative integers < len(L), the 
@@ -463,12 +463,11 @@ def ub(p):
     a = (1+ (1+8*(p-2))**0.5)/2
     return floor(a)  
 
-#
+'''
 def max_diff(p, c):
-    '''
     let gp be the smallest primitive root (modulo p); 
     we consider the set S := {r \in {1,..., p-1} | gp**(r+c) \equiv r \mod p}
-    '''
+'''
      
   
 #for testing list_num_fp_shifts( )
