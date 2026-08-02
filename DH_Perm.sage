@@ -407,6 +407,46 @@ def exp_long_ct(p):
     return out
             
 
+
+'''
+Trying to time the brute force search of the secret exponent
+'''
+
+#tested
+def test_exp(p, b, c, x):
+    '''
+    for a prime p, its primitive root b and integers c, x, the 
+    command test_exp(p, b, c, x) returns True if r_x \equiv (x+c) \mod  (p-1), where 
+    r_x := rem(b^x, p); otherwise, it returns False
+    '''
+    r_x = power_mod(b, x, p)
+    diff = r_x - x -c
+    return (diff%(p-1))==0 
+
+
+#tested
+def brute_force(p, b, c):
+    '''
+    for a prime p, its primitive root b and a shift c, there is at least one integer x \in {1..(p-1)}
+    such that r_x \equiv (x+c) \mod  (p-1), where r_x := rem(b^x, p); the command 
+    brute_force(p, b, c) returns the smallest such integer; it also prints how much time (in seconds) 
+    it took to find x
+    '''
+    T0 = time.time()
+    if ((b-c)%(p-1))==1:
+        print('Time elapsed = ', time.time()-T0)
+        return 1
+    x = 2; r = (b*b)%p
+    while x<p:
+        if (r-c-x)%(p-1)==0:
+            print('Time elapsed = ', time.time()-T0)
+            return x
+        x+=1; r = (r*b)%p
+    print('Time elapsed = ', time.time()-T0, 'Sorry! No such exponent')
+    return None
+
+
+
 '''
 Experimenting with a version of the "Shift Protocol"
 '''
@@ -463,11 +503,20 @@ def ub(p):
     a = (1+ (1+8*(p-2))**0.5)/2
     return floor(a)  
 
-'''
-def max_diff(p, c):
+#a slow working function! the code may be improved!
+def diameter_S(p, c):
+    '''
     let gp be the smallest primitive root (modulo p); 
-    we consider the set S := {r \in {1,..., p-1} | gp**(r+c) \equiv r \mod p}
-'''
+    we consider the set S := {r \in {1,..., p-1} | gp**(r+c) \equiv r \mod p}; 
+    the command diameter_S(p, c) returns the diameter of the set S
+    '''
+    gp = primitive_root(p); S = []
+    gp_c  = power_mod(gp, c, p)
+    for r in range(1, p):
+        lhs = (power_mod(gp, r, p)*gp_c)%p
+        if ((lhs - r)%p==0): S.append(r)
+    if S==[]: return 0
+    else: return max(S)-min(S)
      
   
 #for testing list_num_fp_shifts( )
