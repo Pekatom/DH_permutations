@@ -1,6 +1,8 @@
 This repository is for the code related to Tommy Pham's master thesis. The current contributors to this repository are Vasily A. Dolgushev and Tommy Pham.
 So far we use README as the log of various updates and changes. Comments are given in the reversed chronological order: the most recent one is at the top.
 
+Aug 4, 2026, VD: I uploaded a revised version of 'DH_Perm.sage'; I modified the functions list_num_fp4shifts() and max_num_fp4shifts(); now these functions have two inputs: a prime integer p and its primitive root b
+
 Aug 2, 2026, VD: I uploaded a revised version of 'DH_Perm.sage'; it contains the functions text_exp( , , , ) and brute_force( , , );
 the function brute_force is for breaking our authentication protocol; I would like to compare it to Baby-Steps-Giant-Steps (BSGS)
 
