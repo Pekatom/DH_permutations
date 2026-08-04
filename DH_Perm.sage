@@ -28,6 +28,11 @@ from itertools import combinations as comb
 for instance, comb([1,2,3], 2) generates (1,2), (1,3) and (2,3)
 '''
 
+'''
+We can use 'r' to introduce raw integers, e.g. type(18r) returns 'int'; 
+if p is represented as the raw integers then type(p - 1r) returns 'int' 
+'''
+
 from pickle import dump, load
 #this is for storing and loading the results
 '''
@@ -447,6 +452,40 @@ def brute_force(p, b, c):
 
 
 
+#
+def BSGS(p, b, c):
+    '''
+    for a prime p, its primitive root b and a shift c, there is at least one integer x \in {1..(p-1)}
+    such that r_x \equiv (x+c) \mod  (p-1), where r_x := rem(b^x, p); the command 
+    BSGS(p, b, c) returns one such integer x; it also prints how much time (in seconds) 
+    it took to find x
+    '''
+    T0 = time.time()
+    N = ceil(p**0.5)
+    if ((b-c-1)%(p-1))==0:
+        print('Time elapsed = ', time.time()-T0)
+        return 1
+    x0 = 2; r = (b*b)%p
+    while x0<N:
+        if ((r-c-x0)%(p-1))==0:
+            print('Time elapsed = ', time.time()-T0)
+            return x0
+        x0+=1; r = (r*b)%p
+    #at the end of this loop, r == rem(b^N, p)
+    gamma = r
+    for x1 in range(1, N):
+        for x0 in range(N):
+            x = x0 + x1*N
+            #if not (r==power_mod(b,x,p)): print('Alert!!! ', x)
+            if ((r-x-c)%(p-1))==0:
+                print('Time elapsed = ', time.time()-T0)
+                return x
+            r = (r*b)%p
+    print('Time elapsed = ', time.time()-T0, 'Sorry! No such exponent')
+    return None 
+    
+
+
 '''
 Experimenting with a version of the "Shift Protocol"
 '''
@@ -470,32 +509,33 @@ def max_num_signs(p):
         new = num_signs_slow(p, gp, c)
         if new > m: m = new
     return m
-    
 
 #
-def list_num_fp_shifts(p):
+def list_num_fp4shifts(p, b):
     '''
-    for a prime p, the command list_num_fp_shifts(p) returns the list L of length (p-1); 
-    L[c] is the number of fixed points of the permutation rho**(-c) \circ tau_p, where tau_p is the 
-    key DH permutation and rho = (1,2,..., (p-1))
+    for a prime p and its primitive root b, the command list_num_fp4shifts(p, b) returns the list L of length (p-1); 
+    L[c] is the number of fixed points of the permutation rho**(-c) \circ \tau_{p, b}, where \tau_{p, b} is the permutation 
+    of degree (p-1) defined by the formula tau_{p, b}(x):= rem(b^x, p)
     '''
-    g_p = primitive_root(p)
-    out = [0] * (p-1)
-    current = g_p % p   # g_p^1 mod p
+    p = int(p); b = int(b)
+    out = [int(0)] * (p-1r); 
+    current = int(b % p)   # b modulo p
     for x in range(1, p):
-        c = (current - x ) % (p-1)
+        c = (current - x ) % (p-1r)
         out[c]+=1
-        current = (current * g_p) % p
+        current = int((current * b) % p)
     return out
 
 
-#tested
-def max_num_fp4shifts(p):
+#
+def max_num_fp4shifts(p, b):
     '''
-    for a prime p, the command max_num_fp4shifts(p) returns the maximum of the following set 
-    {num_fp(rho**c \circ tau_p) for c in range(p-1)}; here tau_p is the key DH permutation
+    for a prime p and its primitive root b, 
+    the command max_num_fp4shifts(p, b) returns the maximum of the following set 
+    {num_fp(rho**c \circ tau_{p, b}) for c in range(p-1)}; here tau_{p, b} is defined by the formula
+    tau_{p, b}(x):= rem(b^x, p)
     '''
-    return max(list_num_fp_shifts(p))  
+    return max(list_num_fp4shifts(p, b))  
 
 
 #
@@ -519,7 +559,7 @@ def diameter_S(p, c):
     else: return max(S)-min(S)
      
   
-#for testing list_num_fp_shifts( )
+#for testing list_num_fp4shifts( ) for b = g_p; the function should be redefined...
 def DH_perm(p, tau, c):
     '''
     for a prime p and an integer 1 \leq c \leq (p-1), the command returns 
@@ -528,7 +568,7 @@ def DH_perm(p, tau, c):
     '''
     return tau*(the_cycle(p-1)**c) 
 
-#for testing max_num_fp4shifts( )
+#for testing max_num_fp4shifts( ); the function should be redefined...
 def max_num_fp(p, tau):
     '''
     for a prime p, the command max_num_fp(p) returns the largest number of fixed points 
