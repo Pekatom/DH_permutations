@@ -537,6 +537,20 @@ def max_num_fp4shifts(p, b):
     '''
     return max(list_num_fp4shifts(p, b))  
 
+#
+def max_num_fp4roots_shifts(p):
+    '''
+    for a prime p, the command max_num_fp4roots_shifts(p) returns 
+    the maximum of the following set  {num}
+    '''
+    T0 = time.time()
+    m = 0
+    for b in prim_roots(p):
+        new = max_num_fp4shifts(p,b)
+        if new>m: m = new
+    print(time.time()-T0)
+    return m
+
 
 #
 def ub(p):
