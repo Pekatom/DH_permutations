@@ -1,6 +1,8 @@
 This repository is for the code related to Tommy Pham's master thesis. The current contributors to this repository are Vasily A. Dolgushev and Tommy Pham.
 So far we use README as the log of various updates and changes. Comments are given in the reversed chronological order: the most recent one is at the top.
 
+Aug 14, 2026, VD: I uploaded the PDF file of the book "Additive Combinatorics" by Tao and Vu. If you need it then please download it to your local device at your earliest convenience. I am planning to remove the PDF file in a week or so. 
+
 Aug 10, 2026, VD: I uploaded a revised version of 'DH_Perm.sage'; the revised version has the function max_num_fp4roots_shifts( ); I think that we can define a function that runs faster...
 
 Aug 4, 2026, VD: I uploaded a revised version of 'DH_Perm.sage'; I modified the functions list_num_fp4shifts() and max_num_fp4shifts(); now these functions have two inputs: a prime integer p and its primitive root b
