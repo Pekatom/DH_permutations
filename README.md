@@ -12,6 +12,9 @@ primitive root relative to p.
 
 DESCRIPTION OF IMAGE FILES: 
 
-To be written...
+- The plot in 'brute_force_p_vs_time.ong' shows the relationship between the prime p (x-axis) and the running time of the brute-force method (y-axis).
+For this method, we generated a random integer c satisfying 0 <= c <= p-2 and performed up to p-2 iterations to find a fixed point of
+the permutation rho^{-c} \circ \tau_p, where tau_p(x) := rem(g^x, p).
+
 
 
