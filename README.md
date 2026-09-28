@@ -12,9 +12,15 @@ primitive root relative to p.
 
 DESCRIPTION OF IMAGE FILES: 
 
-- The plot in 'brute_force_p_vs_time.ong' shows the relationship between the prime p (x-axis) and the running time of the brute-force method (y-axis).
+- The plot in 'brute_force_p_vs_time.png' shows the relationship between the prime p (x-axis) and the running time of the brute-force method (y-axis).
 For this method, we generated a random integer c satisfying 0 <= c <= p-2 and performed up to p-2 iterations to find a fixed point of
 the permutation rho^{-c} \circ \tau_p, where tau_p(x) := rem(g^x, p).
+
+- The plot "fp_rou_c_tau_87620_prime.png" displays the prime values on the x-axis while the maximum number of fixed points of the permutations \rho^{c} \circ \tau_{p}, 0 <= c <= p-2, on the y-axis. The first 87260 primes were investigated in this experiment.
+
+- The plots "good_pairs_p1307.png" and "good_pairs_sp719.png" display the pairs (j, k) for which the permutation \rho^{j} \circ \mu_2 \circ \rho^{k} \circ \tau_p has the greatest number of fixed points for prime p= 1307 and p=719, respectively.
+
+- The plot "normalized_good_pairs_30sp.png" display the pairs (j/(p-1),k/(p-1)) for which the permutation \rho^{j} \circ \mu_2 \circ \rho^{k} \circ \tau_p has the greatest number of fixed points for the first 30 safe primes.
 
 
 
