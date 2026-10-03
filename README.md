@@ -22,5 +22,5 @@ the permutation rho^{-c} \circ \tau_p, where tau_p(x) := rem(g^x, p).
 
 - The plot "normalized_good_pairs_30sp.png" display the pairs (j/(p-1),k/(p-1)) for which the permutation \rho^{j} \circ \mu_2 \circ \rho^{k} \circ \tau_p has the greatest number of fixed points for the first 30 safe primes.
 
-- The plot "Theoretical_vs_Practical_bounds.png" displays the values of prime p on the x-axis, while the greatest (theoretical and practical) number of fixed points of the permutation \rho^{c} \circ \tau_{p}, 0 <= c <= p-2.
+- The plot "Theoretical_vs_Practical_bounds.png" displays the values of prime p on the x-axis, while the greatest (theoretical and practical) number of fixed points of the permutation \rho^{c} \circ \tau_{p}, 0 <= c <= p-2. From VD: very good; please give useful information about the range of primes for the experimental results...
 
