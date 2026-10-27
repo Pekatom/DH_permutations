@@ -8,12 +8,7 @@ https://github.com/Pekatom/DiffieHellman_FixedPoints
 Current contributors are Vasily Dolgushev and Tommy Pham 
 
 '''
-import time
 import random
-import timeit
-from math import gcd
-import numpy as np
-from statistics import median
 #for a list L, the command random.choice(L) returns a random element of the list L
 
 from itertools import product as prod
