@@ -533,7 +533,7 @@ def max_num_fp(p, tau):
         if new>m: m = new
     return m
 
-#
+#tested
 def num_fp_all_roots(p):
     '''the function 'num_fp_all_roots' takes a prime 'p' and returns the max number of fixed points for rho^{-c} \circ tau_{p,b}, where 
     tau_{p,b} = rem(b^x, p), for all shifts 1 \leq c \leq p-1 and all primitive roots b mod p. '''
@@ -573,7 +573,7 @@ def num_fp_all_roots(p):
     return max(fixed_for_c)
 
 
-#
+#for testing
 def num_fp_all_roots_slow(p):
    '''
    this is a slower implementation of the function num_fp_all_roots( ); 
