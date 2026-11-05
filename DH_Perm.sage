@@ -71,13 +71,6 @@ key_dict = load_now('key_DH_dict')
 '''
 
 '''
-for a list L and a tuple t = (n_0, n_1, ..., n_q) of non-negative integers < len(L), the 
-command my_slice(L,t) returns the list [L[n_0], L[n_1], ... , L[n_q]]
-'''
-def my_slice(L,t):
-    return [L[a] for a in t] 
-
-'''
 From SageMath documentation: for an integer N > 1 and integers b, x the command
 power_mod(b, x, N) returns the remainder of division of b^x by N; note that
 the output is an instance of the class 'sage.rings.integer.Integer'; the output of 
@@ -104,15 +97,24 @@ for a list L and a permutation g of degree len(L), the command g(L) returns
 the result of the action of g on the list L
 '''
 
-'''
-for an integer N > 2, units_mod(N) is a generator of all units modulo N
-'''
-#
+
+#tested
 def units_mod(N):
+    '''
+    for a positive integer N, units_mod(N) is a generator of all units modulo N
+    '''
     yield 1
-    for u in range(2, N-1):
+    for u in range(2, N):
         if gcd(u, N)==1: yield u
-    yield (N-1)
+
+#for testing units_mod( )
+def test_units_mod(N):
+    units = list(units_mod(N))
+    return len(units)==euler_phi(N)
+'''
+the line below was used for testing units_mod( )
+{test_units_mod(n) for n in range(1,5001)}
+'''
 
 '''
 for an odd prime p, the command is_safe(p) returns True if p is of the form 
@@ -184,12 +186,11 @@ def prim_roots_doc(p):
 def test_prim_roots(p):
     t0 = time.time()
     Test = list(prim_roots(p))
-    print(time.time()-t0)
+    print('Time elapsed for the command  prim_roots( ) = ', time.time()-t0)
     t0 = time.time()
-    Test1 = prim_roots_doc(p)
-    print(time.time()-t0)
-    return Test1 == sorted(Test)
-
+    Test_doc = prim_roots_doc(p)
+    print('Time elapsed for the command  prim_roots_doc( ) = ', time.time()-t0)
+    return Test_doc == sorted(Test)
 
 #tested
 def num_fp(g):
@@ -200,43 +201,54 @@ def num_fp(g):
     ct = list(g.cycle_type( ))
     return ct.count(1)
 
-#
-def len_ct(g): return len(g.cycle_type( ))
+#tested by using elements of SG(3) and SG(4) 
+def len_ct(g):
+    '''
+    for a permutation g, len_ct(g) returns the length of the cycle type of g
+    '''
+    return len(g.cycle_type( ))
 
-#
-def max_len_ce(g): return max(g.cycle_type( ))
+#tested by using elements of SG(3) and SG(4) 
+def len_longest_ce(g):
+    '''
+    for a permutation g, len_longest_ce(g) returns the length of the longest cycle of g
+    '''
+    return max(g.cycle_type( ))
 
-'''
-for a prime p, the command DH_key(p) returns the key DH permutation 
-as an instance of the class 'sage.groups.perm_gps.permgroup_element.SymmetricGroupElement';
-the key DH permutation send an integer x \in {1,..., p-1} to rem(g^p, p), where g is the 
-smallest primitive root modulo p
-'''
-#
+#tested by hand
+def perm2tuple(g):
+    d = g.parent().degree()
+    return tuple(g(x) for x in range(1, d+1))
+
+#tested by hand for p = 5, 7 and 11 
 def DH_key(p):
+    '''
+    for a prime p, the command DH_key(p) returns the key DH permutation as an instance of 
+    the class 'sage.groups.perm_gps.permgroup_element.SymmetricGroupElement';
+    the key DH permutation sends an integer x \in {1,..., p-1} to rem(g^p, p), where g is the 
+    smallest primitive root modulo p
+    '''
     g = primitive_root(p)
     aux = [power_mod(g, x, p) for x in range(1, p-1)] + [1]
     return SymmetricGroup(p-1)(aux)
 
-'''
-p is a prime integer and y is an integer coprime to p, D is a (large)
-dictionary of the key DH permutations (for many primes);  the command 
-dlog(y, p, D) returns the value \tau^{-1}_p(y); the output is an integer 1 \leq x \leq p-1;
-note that this a very inefficient way to compute the value of the discrete logarithm... 
-'''
 #tested
 def dlog(y, p, D):
+    '''
+    p is a prime integer and y is an integer coprime to p, D is a (large) dictionary of the key DH permutations (for many primes);
+    the command dlog(y, p, D) returns the value \tau^{-1}_p(y); the output is an integer 1 \leq x \leq p-1; 
+    note that this an inefficient way to compute the value of the discrete logarithm
+    '''
     tau = D[p]
     for x in range(1, p):
         if D[p](x)==y: return x
- 
-'''
-p is a prime integer and d is an integer > 1; 
-the command list_remainders(p, d, D) returns the list L, 
-where L[(y-1)] is the remainder of division of dlog(y, p) by d
-''' 
+  
 #
 def list_remainders(p, d, D):
+    '''
+    p is a prime integer and d is an integer > 1; the command list_remainders(p, d, D) returns the list L, 
+    where L[(y-1)] is the remainder of division of dlog(y, p) by d
+    '''
     return [dlog(y, p, D)%d for y in range(1,p)]
     
 
