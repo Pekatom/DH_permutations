@@ -24,6 +24,10 @@ the permutation rho^{-c} \circ \tau_p, where tau_p(x) := rem(g^x, p).
 
 - The plot "Theoretical_vs_Practical_bounds.png" displays the values of prime p on the x-axis, while the greatest (theoretical and practical) number of fixed points of the permutation \rho^{c} \circ \tau_{p}, 0 <= c <= p-2. From VD: very good; please give useful information about the range of primes for the experimental results...
 
+DESCRIPTION OF STORAGE FILES:
+
+'ManySafePrimes' contains the list of all safe primes starting with ?? and ending with ???. Altogether, there are ??? safe primes in this range  
+
 TESTING:
 
 VD: We need to describe (somewhat briefly) how the code was tested...
