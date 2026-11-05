@@ -26,7 +26,7 @@ the permutation rho^{-c} \circ \tau_p, where tau_p(x) := rem(g^x, p).
 
 DESCRIPTION OF STORAGE FILES:
 
-'ManySafePrimes' contains the list of all safe primes starting with ?? and ending with ???. Altogether, there are ??? safe primes in this range  
+'ManySafePrimes' contains the list of all safe primes 11 <= p <= 50000747; altogether, there are 124,849 (safe) primes in this range.
 
 TESTING:
 
