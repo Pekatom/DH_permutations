@@ -97,7 +97,6 @@ for a list L and a permutation g of degree len(L), the command g(L) returns
 the result of the action of g on the list L
 '''
 
-
 #tested
 def units_mod(N):
     '''
@@ -217,8 +216,19 @@ def len_longest_ce(g):
 
 #tested by hand
 def perm2tuple(g):
+    '''
+    converts a permutation g of degree d to the corresponding tuple of length d
+    '''
     d = g.parent().degree()
     return tuple(g(x) for x in range(1, d+1))
+      
+#??? by hand
+def perm2list(g):
+    '''
+    converts a permutation g of degree d to the corresponding list of length d
+    '''
+    d = g.parent().degree()
+    return [g(x) for x in range(1, d+1)]
 
 #tested by hand for p = 5, 7 and 11 
 def DH_key(p):
@@ -242,15 +252,6 @@ def dlog(y, p, D):
     tau = D[p]
     for x in range(1, p):
         if D[p](x)==y: return x
-  
-#
-def list_remainders(p, d, D):
-    '''
-    p is a prime integer and d is an integer > 1; the command list_remainders(p, d, D) returns the list L, 
-    where L[(y-1)] is the remainder of division of dlog(y, p) by d
-    '''
-    return [dlog(y, p, D)%d for y in range(1,p)]
-    
 
 '''
 for an integer N > 1 the command the_cycle(N) returns the cycle 
@@ -260,22 +261,22 @@ for an integer N > 1 the command the_cycle(N) returns the cycle
 def the_cycle(N):
     return SymmetricGroup(N)( [tuple(range(1,N+1))] )
 
-
 #
 def dot(u, p):
     '''
-    let p be prime; for an integer u coprime to (p-1), then command dot(u) returns the permutation of degree (p-1) 
-    that sends x to ux (mod (p-1))
+    let p be prime; for an integer u coprime to (p-1), the command dot(u) returns the permutation of degree (p-1) 
+    that sends x to the remainder of division of ux by (p-1)
     '''
     aux = [(u*x)%(p-1) for x in range(1,p-1)] + [(p-1)]
     return SymmetricGroup(p-1)(aux)
     
-'''
-let p be a prime; for an integer v \in {1,2,..., (p-1)}, the command star(v)
-returns the permutation of degree (p-1) that send x to vx (mod p)
-'''
+
 #
 def star(v, p):
+    '''
+    let p be a prime; for an integer v \in {1,2,..., (p-1)}, the command star(v)
+    returns the permutation of degree (p-1) that send x to vx (mod p)
+    '''
     aux = [(v*x)%p for x in range(1, p)]
     return SymmetricGroup(p-1)(aux)
 
@@ -379,30 +380,43 @@ def test_exp(p, b, c, x):
     diff = r_x - x -c
     return (diff%(p-1))==0 
 
+#tested by hand
+def RNST(p, b, x):
+    '''
+    for a prime p, a primitive root b and an integer x, the command RNST(p, b, x)
+    returns the remainder rem(x-r_x, p-1), where r_x = rem(b^x, p); the is the implementation 
+    of the pre-image resistant function C_{p, b} from Chapter 4 of the master thesis
+    '''
+    r_x = int(power_mod(b, x, p))
+    return (x - r_x)%(p-1)
 
-#tested
-def brute_force(p, b, c):
+#tested using RNST( , , )
+def get_exp_via_brute_force(p, b, c):
     '''
-    for a prime p, its primitive root b and a shift c, there is at least one integer x \in {1..(p-1)}
-    such that r_x \equiv (x+c) \mod  (p-1), where r_x := rem(b^x, p); the command 
-    brute_force(p, b, c) returns the smallest such integer; it also prints how much time (in seconds) 
-    it took to find x
+    for a prime p, its primitive root b and an integer c, the command get_exp_via_brute_force(p, b, c) returns 
+    the list of all integers x \in {1..(p-1)} such that r_x \equiv (x-c) \mod  (p-1), where r_x := rem(b^x, p)
     '''
-    T0 = time.time()
-    if ((b-c)%(p-1))==1:
-        print('Time elapsed = ', time.time()-T0)
-        return 1
-    x = 2; r = (b*b)%p
+    out = [ ]; #T0 = time.time()
+    if ((b+c)%(p-1))==1: out.append(1r)
+    x = 2r; r = (b*b)%p
     while x<p:
-        if (r-c-x)%(p-1)==0:
-            print('Time elapsed = ', time.time()-T0)
-            return x
+        if (r+c-x)%(p-1)==0: out.append(x)
         x+=1; r = (r*b)%p
-    print('Time elapsed = ', time.time()-T0, 'Sorry! No such exponent')
-    return None
+    #print('Time elapsed = ', time.time()-T0)
+    return out
 
-
-
+#for testing 
+def testing_get_exp(p, b):
+    '''
+    for a prime integer p and its primitive root b, the command
+    testing_get_exp(p, b) returns True if x belongs to the list  
+    get_exp_via_brute_force(p, b, RNST(p, b, x)) for every integer 1 \leq x \leq p-1
+    '''
+    for x in range(1,p):
+        L = get_exp_via_brute_force(p, b, RNST(p, b, x))
+        if x not in L: return False
+    return True
+    
 #
 def BSGS(p, b, c):
     '''
@@ -438,7 +452,7 @@ def BSGS(p, b, c):
 
 
 '''
-Experimenting with a version of the "Shift Protocol"
+Experimenting with a version of the "Rocky Neck protocol"
 '''
 #
 def num_signs_slow(p, b, c):
@@ -502,26 +516,11 @@ def max_num_fp4roots_shifts(p):
     print(time.time()-T0)
     return m
 
-
 #
 def ub(p):
     a = (1+ (1+8*(p-2))**0.5)/2
     return floor(a)  
 
-#a slow working function! the code may be improved!
-def diameter_S(p, c):
-    '''
-    let gp be the smallest primitive root (modulo p); 
-    we consider the set S := {r \in {1,..., p-1} | gp**(r+c) \equiv r \mod p}; 
-    the command diameter_S(p, c) returns the diameter of the set S
-    '''
-    gp = primitive_root(p); S = []
-    gp_c  = power_mod(gp, c, p)
-    for r in range(1, p):
-        lhs = (power_mod(gp, r, p)*gp_c)%p
-        if ((lhs - r)%p==0): S.append(r)
-    if S==[]: return 0
-    else: return max(S)-min(S)
      
   
 #for testing list_num_fp4shifts( ) for b = g_p; the function should be redefined...
@@ -651,7 +650,25 @@ def modified_bsgs(p, c):
             if r_x == (x-c-1) % p:
                 return x 
 
-   
+#
+def timing4brute_force(p, b):
+    '''
+    for a prime integer p and its primitive root b, the command returns 
+    how much time it takes for find the exponent x = \floor(3(p-1)/4)
+    '''
+    x = (3*(p-1))//4; c = RNST(p, b, x)
+    T0 = time.time()
+    if ((b-c)%(p-1))==1:
+        print('Time elapsed = ', time.time()-T0)
+        return 1
+    x = 2; r = (b*b)%p
+    while x<p:
+        if (r-c-x)%(p-1)==0:
+            print('Time elapsed = ', time.time()-T0)
+            return x
+        x+=1; r = (r*b)%p
+    print('Time elapsed = ', time.time()-T0, 'Sorry! No such exponent')
+    return 0
 
 '''
 We may use the stuff below this line for testing...
