@@ -257,7 +257,7 @@ def dlog(y, p, D):
 for an integer N > 1 the command the_cycle(N) returns the cycle 
 (1,2,3,..., N) as the permutation in the Sage format
 '''
-#tested
+#tested by hand
 def the_cycle(N):
     return SymmetricGroup(N)( [tuple(range(1,N+1))] )
 
@@ -280,66 +280,40 @@ def star(v, p):
     aux = [(v*x)%p for x in range(1, p)]
     return SymmetricGroup(p-1)(aux)
 
-  
-#
-def unlock_perm(u, c, v, p):
+
+def optimal_pairs(primes):
     '''
-    let p be prime, u be an integer coprime to (p-1), c \in {0,1,..., p-2}, v \in {1,2,..., p-1};
-    v is considered as a unit modulo p; the command unlock_perm(u, c, v, p) returns the permutation 
-    of degree (p-1) that sends x to v*(u \cdot x + c)
+    For each odd prime p in the list primes, the command 
+    optimal_pairs(primes) finds all integer pairs (j, k), with
+    1 <= j, k <= p - 1, that maximize the number of fixed points of
+    \rho^j \circ \mu_2 \circ \rho^k \circ \tau_p; the command returns the 
+    list of the corresponding normalized pairs (j/(p - 1), k/(p - 1))
     '''
-    aux1 = [(u*x+c)%(p-1) for x in range(1, p)]
-    for j in range(p-1):
-        if aux1[j]==0: aux1[j]=(p-1)
-    aux2 = [(v*x)%p for x in range(1,p)]
-    return SG(p-1)(aux1)*SG(p-1)(aux2)
+    global_pairs = []
+    
+    for p in primes:
+        local_pairs = []
+        max_fp = -1
+        key_perm = DH_key(p)
+        rho = the_cycle(p-1)
+        mu_2 = star(2,p)
 
-'''
-for a prime p, gener_unlock_perm(p) is a generator of "unlocking" permutations
-for all triple (u, c, v), where u is a unit modulo (p-1) c \in {0,...,(p-2)} and v \in {1,..., p-1}
-(we think of v as a unit modulo p)
-'''
-#
-def gener_unlock_perm(p):
-    for (u, c, v) in prod(units_mod(p-1), range(p-1), range(1,p)): yield unlock_perm(u, c, v, p)
-
-'''
-I experiment with pairs (c, v) in {0,1,..., p-2} \times {1,..., p-1} and 
-the "unlocking" permutations corresponding to (1, c, v); so far, I do not see any patterns...
-'''
-#
-def best_pairs(p):
-    tau = DH_key(p)
-    Pr = [unlock_perm(1, c, v, p)*tau for (c,v) in prod(range(p-1), range(1, p))]
-    m = max({num_fp(g) for g in Pr}); print('   the largest number of fixed points  = ', m)
-    out = []
-    for (c, v) in prod(range(p-1), range(1, p)):
-        if num_fp(unlock_perm(1, c, v, p)*tau)==m: out.append((c,v))
-    return out
-
-
-'''
-let p be prime and r be an even positive integer; 
-gener_unlock_tup(r, p) a generator of tuples (k_0, k_1, ..., k_{r-1}) 
-such that 0 \leq k_0, k_{r-1} \leq p-2, 1 \leq k_1, k_2, ..., k_{r-2} \leq p-2, 
-'''
-#tested
-def gener_unlock_tup(r, p):
-    for k0 in range(p-1):
-        for t in prod(range(1, p-1), repeat=(r-2)):
-            for k_last in range(p-1):
-                yield (k0,)+t+(k_last,)
+        for j in range(1, p):
+            for k in range(1, p):
+                perm = key_perm * (rho**k) * mu_2 * (rho**j)
+                number_fp = num_fp(perm)
                 
-'''
-a,  b are permutations of degree (p-1); for a tuple t = (k0, k1, ...) of even length r, 
-the command tuple2perm(t, a, b) returns the permutation a^{k0}*b^{k1}*... (computer order); 
-in my experiments, I tried a = (1,2,..., p-1) and b(x) := g_p*x, where g_p is the smallest primitive root
-'''
-#tested
-def tuple2perm(t, a, b):
-    pt = (a,b)
-    aux = tuple(pt[j%2]**t[j] for j in range(len(t)))
-    return product(aux)
+                if number_fp > max_fp:
+                    local_pairs = []
+                    max_fp = number_fp
+                    local_pairs.append((N(j/(p-1)), N(k/(p-1))))
+                
+                elif number_fp == max_fp:
+                    local_pairs.append((N(j/(p-1)), N(k/(p-1))))
+        
+        global_pairs.extend(local_pairs)
+
+    return global_pairs
 
 #
 def DH_shift(p, j):
@@ -362,8 +336,6 @@ def exp_long_ct(p):
             if new==m: out.append(j)
             else:  m=new; out =[j]
     return out
-            
-
 
 '''
 Trying to time the brute force search of the secret exponent
@@ -516,12 +488,16 @@ def max_num_fp4roots_shifts(p):
     print(time.time()-T0)
     return m
 
-#
-def ub(p):
-    a = (1+ (1+8*(p-2))**0.5)/2
-    return floor(a)  
-
-     
+#tested by hand
+def theoretical_ub(p):
+    '''
+    For a prime p, the command 'theoretical_ub(p)' returns the 
+    theoretical upper bound on the number of fixed points of the 
+    permutations \rho^c \circ \tau_{p, b} where 1 <= c <= p-1 and b 
+    is any primitive root
+    '''
+    return (p-1)**(0.5) + (p-1)**(0.25) + 0.5
+ 
   
 #for testing list_num_fp4shifts( ) for b = g_p; the function should be redefined...
 def DH_perm(p, tau, c):
@@ -582,7 +558,6 @@ def num_fp_all_roots(p):
         inverse_check.append(inv)
 
     return max(fixed_for_c)
-
 
 #for testing
 def num_fp_all_roots_slow(p):
