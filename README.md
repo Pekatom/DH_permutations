@@ -81,13 +81,17 @@ all primitive roots b modulo p.
 - For a prime p, the command 'theoretical_ub(p)' returns the
 theoretical upper bound on the number of fixed points of the
 permutations \rho^c \circ \tau_p, where 1 <= c <= p-1.
+Here, tau_p:= rem(gp^x,p), where gp is the smallest positive
+primitive root modulo p, and rho:= (1 2 3 ... p-1).
 
 - For each odd prime p in the list 'primes', the command
 optimal_pairs(primes) finds all integer pairs (j, k), with
 1 <= j, k <= p - 1, that maximize the number of fixed points of
 \rho^j \circ \mu_2 \circ \rho^k \circ \tau_p.
 Then it calculates the normalized pairs (j/(p - 1), k/(p - 1)), 
-and then combines those normalized pairs into a single list.
+and then combines those normalized pairs for all primes p into a single list.
+Here, rho:= (1 2 3 ... p-1), mu_2:= rem(2x, p), and tau_p:= rem(gp^x,p),
+where gp is the smallest positive primitive root modulo p.
 
 DESCRIPTION OF IMAGE FILES: 
 
