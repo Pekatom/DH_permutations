@@ -495,7 +495,7 @@ def brute_force_fp(p, c):
             if r_x == (x-c-1) % p:
                 return x 
 
-''''''the function 'num_fp_all_prim' takes a prime 'p' and returns the max number of fixed points for 
+'''the function 'num_fp_all_prim' takes a prime 'p' and returns the max number of fixed points for 
 rho^{-c} \circ tau_{p,b}, where tau_{p,b} = rem(b^x, p), for all shifts 1 <= c <= p-1 and all primitive roots 
 'b' mod 'p'. '''
 
@@ -534,3 +534,48 @@ def num_fp_all_prim(p):
         inverse_check.append(inv)
 
     return max(fixed_for_c)
+
+def optimal_pairs(primes):
+    '''
+    For each odd prime p in the list primes, the command 
+    optimal_pairs(primes) finds all integer pairs (j, k), with
+    1 <= j, k <= p - 1, that maximize the number of fixed points of
+    \rho^j \circ \mu_2 \circ \rho^k \circ \tau_p.
+
+    Then it calculates the normalized pairs (j/(p - 1), k/(p - 1)), 
+    and then combines those normalized pairs into a single list.
+    '''
+
+    global_pairs = []
+    
+    for p in primes:
+        local_pairs = []
+        max_fp = -1
+        key_perm = DH_key(p)
+        rho = the_cycle(p)
+        mu_2 = star(2,p)
+
+        for j in range(1, p):
+            for k in range(1, p):
+                perm = key_perm * (rho**k) * mu_2 * (rho**j)
+                number_fp = num_fp(perm)
+                
+                if number_fp > max_fp:
+                    local_pairs = []
+                    max_fp = number_fp
+                    local_pairs.append((N(j/(p-1)), N(k/(p-1))))
+                
+                elif number_fp == max_fp:
+                    local_pairs.append((N(j/(p-1)), N(k/(p-1))))
+        
+        global_pairs.extend(local_pairs)
+
+    return global_pairs
+
+def theoretical_ub(p):
+
+    '''For a prime p, the command 'theoretical_ub(p)' returns the 
+    theoretical upper bound on the number of fixed points of the 
+    permutations \rho^c \circ \tau_p, where 1 <= c <= p-1 '''
+
+    return N(sqrt(p-1) + (p-1)**(0.25) + 0.5)
