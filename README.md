@@ -6,8 +6,79 @@ Here, we put a couple of paragraphs (in very general terms) about what one can d
 
 DESCRIPTIONS OF SELECTED FUNCTIONS: 
 
-- The function max_num_fp4shifts(p, b) takes a prime p, a primitive root b modulo p, and returns the max number of fixed points for 
+- The function 'max_num_fp4shifts(p, b)' takes a prime p, a primitive root b modulo p, and returns the max number of fixed points for 
 rho^{-c} \circ tau_{p,b}, where 0 <= c <= p-2 and tau_{p,b} = rem(b^x, p).
+
+- For an odd prime p, the command 'is_safe(p)' returns True if p is of the form
+2q + 1 with q being prime; otherwise False.
+
+- For an integer n, the command 'next_safe_prime(n)' returns the smallest safe
+prime p such that p > n.
+
+- For a prime p and a primitive root b (mod p), the command 'order_mod(b, p)'
+returns the order of the residue class of b (mod p) in the multiplicative group of units
+(Z/pZ)^×.
+
+- For a prime p and an integer b coprime to p, the command 'is_primitive(b, p)'
+returns True if b is a primitive root mod p; otherwise, False.
+
+- For a prime p, 'prim_roots(p)' is a generator of all primitive roots modulo p, e.g.
+the command list(prim roots(23)) returns
+[5, 10, 20, 17, 11, 21, 19, 15, 7, 14].
+
+- For a prime p, the command 'DH_key(p)' returns the key DH permutation as an instance
+of the class
+’sage.groups.perm gps.permgroup element.SymmetricGroupElement’;
+the key DH permutation sends an integer x ∈ {1, ..., p − 1} to rem(gp, p), where gp
+is the smallest primitive root modulo p.
+
+- For an integer N > 1, the command 'the_cycle(N)' returns the cycle (1, 2, 3, ...,N)
+as the permutation in the Sage format.
+
+- Let p be prime; for an integer u coprime to (p − 1), command 'dot(u)' returns the
+permutation of degree (p − 1) that sends x to ux (mod p − 1).
+
+- Let p be a prime; for an integer v ∈ {1, 2, ..., (p − 1)}, the command star(v)
+returns the permutation of degree (p − 1) that send x to vx (mod p).
+
+- For a prime p and an integer j, the command 'DH_shift(p, j)' returns the composition
+of τ_p with the shift by j.
+
+- For a prime p, the command 'exp_long_ct(p)' returns the list of integers j for
+which ρ^j ◦ τ_p has the longest cycle type.
+
+- For a prime p, its primitive root b and a shift c, there is at least one integer x ∈
+{1, . . . , p−1} such that rx ≡ (x+c) (mod p−1), where rx := rem(bx, p); the command
+'brute_force(p, b, c)' returns the smallest such integer; it also prints
+how much time (in seconds) it took to find x.
+
+- For a prime p, its primitive root b and a shift c, there is at least one integer x ∈
+{1 . . . , p − 1} such that rx ≡ (x + c) (mod p − 1), where rx := rem(bx, p); the
+command 'BSGS(p, b, c)' returns one such integer x; it also prints how much
+time (in seconds) it took to find x.
+
+- For a prime p, its primitive root b and an integer c, the command 'num_signs_slow(p,
+b, c)' returns the number of integers 0 ≤ x ≤ p − 2 such that bx ≡ x (mod p).
+
+- For a prime p and a primitive root b modulo p, the command 'list_num_fp4shifts(p,
+b)' returns a list L of length p − 1. The entry L[c] is the number of fixed points of
+the permutation ρ^{−c} ◦ τ_p,b, where τ_{p,b} is the permutation of degree p − 1 defined by
+the formula τ_{p,b}(x) := rem(b^x, p).
+
+- For a prime p and a primitive root b modulo p, the command 'max_num_fp4shifts(p,
+b)' returns the maximum number of fixed points among the permutations ρ^c ◦ τ_{p,b} for
+c = 0, 1, . . . , p − 2, where τ_{p,b} is defined by τ_{p,b}(x) := rem(b^x, p).
+
+- For a prime p, the command 'max_num_fp(p)' returns the largest number of fixed
+points for the family of DH permutations ρ^c ◦ τ_p, 1 ≤ c ≤ p − 1.
+
+- For a prime p and an integer 1 ≤ c ≤ p−1, the command 'DH_perm(p, tau, c)'
+returns the DH permutation τ_{p,gp,c} of degree (p − 1) in the Sage format, where tau
+is the key DH permutation.
+
+- For a prime p, the function 'num_fp_all_roots(p)' returns the max number of
+fixed points for ρ^c ◦ τ_{p,b}, where τ_{p,b} := rem(b^x, p), for all shifts 1 ≤ c ≤ p − 1 and
+all primitive roots b modulo p.
 
 DESCRIPTION OF IMAGE FILES: 
 
