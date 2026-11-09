@@ -23,13 +23,11 @@ returns the order of the residue class of b (mod p) in the multiplicative group 
 returns True if b is a primitive root mod p; otherwise, False.
 
 - For a prime p, 'prim_roots(p)' is a generator of all primitive roots modulo p, e.g.
-the command list(prim roots(23)) returns
-[5, 10, 20, 17, 11, 21, 19, 15, 7, 14].
+the command list(prim roots(23)) returns [5, 10, 20, 17, 11, 21, 19, 15, 7, 14].
 
 - For a prime p, the command 'DH_key(p)' returns the key DH permutation as an instance
-of the class
-’sage.groups.perm gps.permgroup element.SymmetricGroupElement’;
-the key DH permutation sends an integer x ∈ {1, ..., p − 1} to rem(gp, p), where gp
+of the class ’sage.groups.perm gps.permgroup element.SymmetricGroupElement’;
+the key DH permutation sends an integer x ∈ {1, ..., p − 1} to rem(gp^x, p), where gp
 is the smallest primitive root modulo p.
 
 - For an integer N > 1, the command 'the_cycle(N)' returns the cycle (1, 2, 3, ...,N)
@@ -48,21 +46,21 @@ of τ_p with the shift by j.
 which ρ^j ◦ τ_p has the longest cycle type.
 
 - For a prime p, its primitive root b and a shift c, there is at least one integer x ∈
-{1, . . . , p−1} such that rx ≡ (x+c) (mod p−1), where rx := rem(bx, p); the command
+{1, . . . , p−1} such that r_x ≡ (x+c) (mod p−1), where r_x := rem(b^x, p); the command
 'brute_force(p, b, c)' returns the smallest such integer; it also prints
 how much time (in seconds) it took to find x.
 
 - For a prime p, its primitive root b and a shift c, there is at least one integer x ∈
-{1 . . . , p − 1} such that rx ≡ (x + c) (mod p − 1), where rx := rem(bx, p); the
+{1 . . . , p − 1} such that r_x ≡ (x + c) (mod p − 1), where r_x := rem(b^x, p); the
 command 'BSGS(p, b, c)' returns one such integer x; it also prints how much
 time (in seconds) it took to find x.
 
 - For a prime p, its primitive root b and an integer c, the command 'num_signs_slow(p,
-b, c)' returns the number of integers 0 ≤ x ≤ p − 2 such that bx ≡ x (mod p).
+b, c)' returns the number of integers 0 ≤ x ≤ p − 2 such that b^x ≡ x (mod p).
 
 - For a prime p and a primitive root b modulo p, the command 'list_num_fp4shifts(p,
 b)' returns a list L of length p − 1. The entry L[c] is the number of fixed points of
-the permutation ρ^{−c} ◦ τ_p,b, where τ_{p,b} is the permutation of degree p − 1 defined by
+the permutation ρ^{−c} ◦ τ_{p,b}, where τ_{p,b} is the permutation of degree p − 1 defined by
 the formula τ_{p,b}(x) := rem(b^x, p).
 
 - For a prime p and a primitive root b modulo p, the command 'max_num_fp4shifts(p,
