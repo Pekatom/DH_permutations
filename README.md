@@ -6,9 +6,8 @@ Here, we put a couple of paragraphs (in very general terms) about what one can d
 
 DESCRIPTIONS OF SELECTED FUNCTIONS: 
 
-- The function num_fp_rho_c_tau takes a prime p and returns the max number of fixed points for 
-rho^{-c} \circ tau_p, where 0 <= c <= p-2 and tau_p = rem(g_p^x, p), where g_p is the smallest
-primitive root relative to p.
+- The function max_num_fp4shifts(p, b) takes a prime p, a primitive root b modulo p, and returns the max number of fixed points for 
+rho^{-c} \circ tau_{p,b}, where 0 <= c <= p-2 and tau_{p,b} = rem(b^x, p).
 
 DESCRIPTION OF IMAGE FILES: 
 
