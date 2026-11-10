@@ -483,16 +483,6 @@ def theoretical_ub(p):
     is any primitive root
     '''
     return (p-1)**(0.5) + (p-1)**(0.25) + 0.5
- 
-  
-#for testing list_num_fp4shifts( ) for b = g_p; the function should be redefined...
-def DH_perm(p, tau, c):
-    '''
-    for a prime p and an integer 1 \leq c \leq (p-1), the command returns 
-    the DH permutation \tau_{p, g_p, c} of degree (p-1) in the Sage format;
-    tau is the key DH permutation
-    '''
-    return tau*(the_cycle(p-1)**c) 
 
 #tested
 def num_fp_all_roots(p):
