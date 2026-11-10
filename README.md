@@ -1,10 +1,10 @@
-This repository is for the code related to Thien (Tommy) Pham's master thesis "AN EXPLORATION OF DIFFIE-HELLMAN PERMUTATIONS". 
+This repository is for the code related to Thien (Tommy) Pham's Master Thesis "AN EXPLORATION OF DIFFIE-HELLMAN PERMUTATIONS". 
 The current contributors to this repository are Sophia V. Breslavets, Vasily A. Dolgushev and Tommy Pham. All scripts are written in SageMath. 
 
-Here, we put a couple of paragraphs (in very general terms) about what one can do using the code in this repository. 
-(To be written)
+The repository contains the Sage script 'DH_Perm.sage' for working with DH permutations and with the Rocky Neck authentication protocol.
+The repository contains several image files that feature selected results of our work. It also contains two storage files described below.  
 
-DESCRIPTIONS OF SELECTED FUNCTIONS: 
+DESCRIPTIONS OF SELECTED FUNCTIONS IN 'DH_Perm.sage':
 
 - The function 'max_num_fp4shifts(p, b)' takes a prime p, a primitive root b modulo p, and returns the max number of fixed points for 
 rho^{-c} \circ tau_{p,b}, where 0 <= c <= p-2 and tau_{p,b} = rem(b^x, p).
@@ -31,7 +31,7 @@ the key DH permutation sends an integer x ∈ {1, ..., p − 1} to rem(gp^x, p),
 is the smallest primitive root modulo p.
 
 - For an integer N > 1, the command 'the_cycle(N)' returns the cycle (1, 2, 3, ...,N)
-as the permutation in the Sage format.
+as the permutation in the SageMath format.
 
 - Let p be prime; for an integer u coprime to (p − 1), command 'dot(u)' returns the
 permutation of degree (p − 1) that sends x to ux (mod p − 1).
@@ -71,7 +71,7 @@ c = 0, 1, . . . , p − 2, where τ_{p,b} is defined by τ_{p,b}(x) := rem(b^x, 
 points for the family of DH permutations ρ^c ◦ τ_p, 1 ≤ c ≤ p − 1.
 
 - For a prime p and an integer 1 ≤ c ≤ p−1, the command 'DH_perm(p, tau, c)'
-returns the DH permutation τ_{p,gp,c} of degree (p − 1) in the Sage format, where tau
+returns the DH permutation τ_{p,gp,c} of degree (p − 1) in the SageMath format, where tau
 is the key DH permutation.
 
 - For a prime p, the function 'num_fp_all_roots(p)' returns the max number of
@@ -116,4 +116,4 @@ DESCRIPTION OF STORAGE FILES:
 
 TESTING:
 
-VD: We need to describe (somewhat briefly) how the code was tested...
+Many functions were tested by hand. For selected functions (e.g. num_fp_all_roots( )) we used a different (but slower) implementation and we used the slower implementation to test that the original functions is working correctly. For example, to test num_fp_all_roots( ) one can run the command test_num_fp_all_roots(p) for various primes p.  
