@@ -222,7 +222,7 @@ def perm2tuple(g):
     d = g.parent().degree()
     return tuple(g(x) for x in range(1, d+1))
       
-#??? by hand
+#tested by hand
 def perm2list(g):
     '''
     converts a permutation g of degree d to the corresponding list of length d
@@ -280,7 +280,7 @@ def star(v, p):
     aux = [(v*x)%p for x in range(1, p)]
     return SymmetricGroup(p-1)(aux)
 
-
+#
 def optimal_pairs(primes):
     '''
     For each odd prime p in the list primes, the command 
@@ -338,7 +338,7 @@ def exp_long_ct(p):
     return out
 
 '''
-Trying to time the brute force search of the secret exponent
+Experimenting with the Rocky Neck Protocol
 '''
 
 #tested
@@ -353,16 +353,16 @@ def test_exp(p, b, c, x):
     return (diff%(p-1))==0 
 
 #tested by hand
-def RNST(p, b, x):
+def RNSP(p, b, x):
     '''
-    for a prime p, a primitive root b and an integer x, the command RNST(p, b, x)
+    for a prime p, a primitive root b and an integer x, the command RNSP(p, b, x)
     returns the remainder rem(x-r_x, p-1), where r_x = rem(b^x, p); the is the implementation 
     of the pre-image resistant function C_{p, b} from Chapter 4 of the master thesis
     '''
     r_x = int(power_mod(b, x, p))
     return (x - r_x)%(p-1)
 
-#tested using RNST( , , )
+#tested using RNSP( , , )
 def get_exp_via_brute_force(p, b, c):
     '''
     for a prime p, its primitive root b and an integer c, the command get_exp_via_brute_force(p, b, c) returns 
@@ -382,29 +382,41 @@ def testing_get_exp(p, b):
     '''
     for a prime integer p and its primitive root b, the command
     testing_get_exp(p, b) returns True if x belongs to the list  
-    get_exp_via_brute_force(p, b, RNST(p, b, x)) for every integer 1 \leq x \leq p-1
+    get_exp_via_brute_force(p, b, RNSP(p, b, x)) for every integer 1 \leq x \leq p-1
     '''
     for x in range(1,p):
-        L = get_exp_via_brute_force(p, b, RNST(p, b, x))
+        L = get_exp_via_brute_force(p, b, RNSP(p, b, x))
         if x not in L: return False
     return True
-    
+ 
+#
+def brute_force(p, b, c):
+    '''
+    'brute_force(p, b, c)' checks sequentially (starting from x = 1) whether an exponent 'x' satisfying the 
+    congruence rem(b^x, p) \equiv x - c (mod p-1), where 'b' is a primitive root modulo prime 'p'
+    '''
+    r_x = 1r
+    for x in range(1, p-1):
+        r_x = (r_x * b)%p
+        if r_x == (x-c) %(p-1): return x
+    print('Sorry! No such exponent'); return None
+ 
 #
 def BSGS(p, b, c):
     '''
     for a prime p, its primitive root b and a shift c, there is at least one integer x \in {1..(p-1)}
-    such that r_x \equiv (x+c) \mod  (p-1), where r_x := rem(b^x, p); the command 
+    such that r_x \equiv (x-c) \mod  (p-1), where r_x := rem(b^x, p); the command 
     BSGS(p, b, c) returns one such integer x; it also prints how much time (in seconds) 
     it took to find x
     '''
     T0 = time.time()
     N = ceil(p**0.5)
-    if ((b-c-1)%(p-1))==0:
+    if ((b+c-1)%(p-1))==0:
         print('Time elapsed = ', time.time()-T0)
         return 1
     x0 = 2; r = (b*b)%p
     while x0<N:
-        if ((r-c-x0)%(p-1))==0:
+        if ((r+c-x0)%(p-1))==0:
             print('Time elapsed = ', time.time()-T0)
             return x0
         x0+=1; r = (r*b)%p
@@ -414,38 +426,12 @@ def BSGS(p, b, c):
         for x0 in range(N):
             x = x0 + x1*N
             #if not (r==power_mod(b,x,p)): print('Alert!!! ', x)
-            if ((r-x-c)%(p-1))==0:
+            if ((r-x+c)%(p-1))==0:
                 print('Time elapsed = ', time.time()-T0)
                 return x
             r = (r*b)%p
     print('Time elapsed = ', time.time()-T0, 'Sorry! No such exponent')
-    return None 
-    
-
-
-'''
-Experimenting with a version of the "Rocky Neck protocol"
-'''
-#
-def num_signs_slow(p, b, c):
-    '''
-    for a prime p, its primitive root b and an integer c, the command returns the 
-    number of integers 0 \leq x \leq (p-2) such that b^x \equiv x  mod  p 
-    '''
-    s = 0
-    for x in range(p-1):
-        if ((x+c)%p)!=0:
-            y = (power_mod(b, x, p)-x-c)%p
-            if y==0: s+=1
-    return s
-
-#
-def max_num_signs(p):
-    m = 0; gp = primitive_root(p)
-    for c in range(p):
-        new = num_signs_slow(p, gp, c)
-        if new > m: m = new
-    return m
+    return None
 
 #
 def list_num_fp4shifts(p, b):
@@ -631,79 +617,11 @@ def timing4brute_force(p, b):
     for a prime integer p and its primitive root b, the command returns 
     how much time it takes for find the exponent x = \floor(3(p-1)/4)
     '''
-    x = (3*(p-1))//4; c = RNST(p, b, x)
+    c = RNSP(p, b, (3*(p-1))//4)
     T0 = time.time()
-    if ((b-c)%(p-1))==1:
-        print('Time elapsed = ', time.time()-T0)
-        return 1
-    x = 2; r = (b*b)%p
+    if ((b+c)%(p-1))==1: return time.time()-T0
+    x = 2r; r = (b*b)%p
     while x<p:
-        if (r-c-x)%(p-1)==0:
-            print('Time elapsed = ', time.time()-T0)
-            return x
+        if (r+c-x)%(p-1)==0: return time.time()-T0
         x+=1; r = (r*b)%p
-    print('Time elapsed = ', time.time()-T0, 'Sorry! No such exponent')
-    return 0
-
-'''
-We may use the stuff below this line for testing...
-'''
-
-#
-def fun(p, succ_fun = num_fp):
-    '''
-    for a prime p, this procedure produces different histograms: for units mod (p-1), for units mod p and for all shifts 
-    '''
-    tau = DH_key(p); ce = the_cycle(p-1)
-    Test_u = [succ_fun(dot(u,p)*tau) for u in units_mod(p-1)]
-    print('Done with units modulo ', p-1)
-    Test_shift = [succ_fun((ce**j)*tau) for j in range(p)]
-    return [Test_shift, Test_u]
-
-#
-def suit_fun(S, succ_fun = num_fp):
-    '''
-    S is a list (or a tuple) of permutations of the same degree
-    and succ_fun is a chosen success function (e.g. the function may return the number of fixed points); 
-    the command suit_fun(S, succ_fun) returns the sum of values of succ_fun(s) for all s in S
-    '''
-    out = 0
-    for s in S: out+=succ_fun(s)
-    return out
-    
-#    
-def pool(p):
-    '''
-    for a prime p, the command pool(p) returns the dictionary of permutations 
-    (rho**j) \mu_{g_p} \rho**k, where rho = (1,2,..., (p-1)) and g_p is the smallest primitive root mod p 
-    '''
-    out = { }; gp = primitive_root(p);
-    rho = the_cycle(p-1); mu = star(gp,p)
-    for (j, k) in prod(range(p-1), repeat = 2): out[(j,k)] = (rho**k)*mu*(rho**j)
-    return out
-
-
-#    
-def square(p):
-    '''
-    for a prime p, the command pool(p) returns the dictionary of permutations 
-    tau_p*(rho**j) \mu_{2} \rho**k, where rho = (1,2,..., (p-1)) and tau_p is the key DH permutation 
-    '''
-    out = { }; tau = DH_key(p)
-    rho = the_cycle(p-1); mu2 = star(2, p)
-    for (j, k) in prod(range(p-1), repeat = 2): out[(j,k)] = tau*(rho**k)*mu2*(rho**j)
-    return out
-
-def explore_sq(p):
-   '''
-   Tommy made an interesting observation about pairs (j, k) for DH permutations tau*(rho**k)*mu2*(rho**j);
-   I am trying to verify this observation... 
-   '''
-   D = square(p)
-   m = max(num_fp(D[k]) for k in D.keys( ))
-   sp_pairs = [k for k in D.keys( ) if num_fp(D[k])==m]
-   print('The maximum number of fixed points = ', m)
-   print('There are ', len(sp_pairs), 'special pairs')
-   return {(j+2*k)%(p-1) for (j, k) in sp_pairs}
-
 
