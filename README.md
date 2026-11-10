@@ -43,7 +43,7 @@ returns the permutation of degree (p − 1) that send x to vx (mod p).
 of τ_p with the shift by j.
 
 - For a prime p, the command 'exp_long_ct(p)' returns the list of integers j for
-which ρ^j ◦ τ_p has the longest cycle type.
+which ρ^j \circ τ_p has the longest cycle type.
 
 - For a prime p, its primitive root b and a shift c, there is at least one integer x ∈
 {1, . . . , p−1} such that r_x ≡ (x+c) (mod p−1), where r_x := rem(b^x, p); the command
@@ -111,6 +111,8 @@ the permutation rho^{-c} \circ \tau_p, where tau_p(x) := rem(g^x, p).
 DESCRIPTION OF STORAGE FILES:
 
 'ManySafePrimes' contains the list of all safe primes 11 <= p <= 50000747; altogether, there are 124,849 (safe) primes in this range.
+
+'dict_DH_key' contains the dictionary of key DH permutations for all primes 5 <= p <= 9551; there are 1181 primes in this range; all permutations in this dictionary are represented as lists.
 
 TESTING:
 
