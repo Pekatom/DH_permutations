@@ -494,18 +494,6 @@ def DH_perm(p, tau, c):
     '''
     return tau*(the_cycle(p-1)**c) 
 
-#for testing max_num_fp4shifts( ); the function should be redefined...
-def max_num_fp(p, tau):
-    '''
-    for a prime p, the command max_num_fp(p) returns the largest number of fixed points 
-    for the family of DH permutations  shift_c \circ tau
-    '''
-    m = 0
-    for c in range(p-1):
-        new = num_fp(DH_perm(p, tau, c))
-        if new>m: m = new
-    return m
-
 #tested
 def num_fp_all_roots(p):
     '''the function 'num_fp_all_roots' takes a prime 'p' and returns the max number of fixed points for rho^{-c} \circ tau_{p,b}, where 
